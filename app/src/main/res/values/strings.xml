@@ -8,6 +8,7 @@
     <string name="start_level">Level 1</string>
     <string name="tag_location">Tag Location</string>
     <string name="tag_no_location">No option here</string>
+    <string name="tag_cancel">Cancel</string>
     <!-- -
         This is an ad unit ID for an interstitial test ad. Replace with your own interstitial ad unit id.
         For more information, see https://support.google.com/admob/answer/3052638

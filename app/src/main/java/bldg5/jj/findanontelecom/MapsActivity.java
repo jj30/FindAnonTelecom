@@ -19,7 +19,9 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -34,6 +36,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.plus.model.people.Person;
 
 import java.util.List;
 
@@ -55,14 +58,17 @@ public class MapsActivity extends FragmentActivity
     private String android_id;
     private AdView mAdView;
     private Button btnLocation;
-    private Button btnNoLocation;
+    // private Button btnNoLocation;
+    private FrameLayout pinSelected;
+    private Location pinsDrawn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         btnLocation = (Button) findViewById(R.id.btnLocation);
-        btnNoLocation = (Button) findViewById(R.id.btnNoLocation);
+        // btnNoLocation = (Button) findViewById(R.id.btnNoLocation);
+        pinSelected = (FrameLayout) findViewById(R.id.pinSelected);
 
         // Show the ad
         AdRequest adRequest = new AdRequest.Builder()
@@ -105,6 +111,8 @@ public class MapsActivity extends FragmentActivity
         }
 
         Location location = locationManager.getLastKnownLocation(mprovider);
+        // save this location as the "init" location
+        pinsDrawn = location;
 
         // If we have one and the map is ready, zoom into it.
         if (location != null && mMap != null) {
@@ -130,6 +138,17 @@ public class MapsActivity extends FragmentActivity
         );
     }
 
+    private void RedrawPins(Location location) {
+        // if new location is within a mile of the init'ed location, don't redraw
+        float distance = pinsDrawn.distanceTo(location);
+        // 1600 meters is roughly one mile
+        if (distance > 1600) {
+            DrawMarkers50Miles(location);
+            pinsDrawn = location;
+        }
+    }
+
+
     private class MyLocationListener implements LocationListener {
         public void onLocationChanged(Location location) {
             String message = String.format(
@@ -137,45 +156,7 @@ public class MapsActivity extends FragmentActivity
                     location.getLongitude(), location.getLatitude()
             );
             Toast.makeText(MapsActivity.this, message, Toast.LENGTH_LONG).show();
-
-            dblLat = location.getLatitude();
-            dblLong = location.getLongitude();
-
-            final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-            List<TCOption> allOptions = sqLiteHelper.getAllTCOs();
-
-            for (final TCOption tcOption : allOptions) {
-                markLocation(tcOption);
-
-                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
-                {
-                    @Override
-                    public boolean onMarkerClick(Marker arg0)
-                    {
-                        if (arg0.getTitle().contains("Option")) {
-                            // if marker source is clicked
-                            // Toast.makeText(MapsActivity.this, "YOU CLICKED THE MARKER", Toast.LENGTH_LONG).show();
-                            // switch buttons
-                            boolean bLocationVisible = btnLocation.getVisibility() == View.VISIBLE;
-                            boolean bNoLocationVisible = btnNoLocation.getVisibility() == View.VISIBLE;
-
-                            btnNoLocation.setVisibility(bNoLocationVisible ? View.GONE : View.VISIBLE);
-                            btnLocation.setVisibility(bLocationVisible ? View.GONE : View.VISIBLE);
-
-                            Button buttonUnTag = (Button) findViewById(R.id.btnNoLocation);
-
-                            buttonUnTag.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    sqLiteHelper.deleteTCO(tcOption);
-                                    mMap.clear();
-                                }
-                            });
-                        };
-                        return true;
-                    };
-                });
-            }
+            RedrawPins(location);
         }
 
         public void onStatusChanged(String s, int i, Bundle b) {
@@ -196,12 +177,74 @@ public class MapsActivity extends FragmentActivity
         }
     }
 
+    private void DrawMarkers50Miles(Location location) {
+        dblLat = location.getLatitude();
+        dblLong = location.getLongitude();
+
+        final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+        List<TCOption> allOptions = sqLiteHelper.getAllTCOs();
+
+        for (final TCOption tcOption : allOptions) {
+            markLocation(tcOption);
+            mMap.setOnMarkerClickListener(mMarkerListener);
+        }
+    }
+
+    private GoogleMap.OnMarkerClickListener mMarkerListener = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(final Marker arg0) {
+            final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+            final String strTitle = arg0.getTitle();
+
+            if (strTitle.contains("Option")) {
+                // if marker source is clicked
+                // switch buttons (toggle visibility)
+                final boolean bLocationVisible = btnLocation.getVisibility() == View.VISIBLE;
+                // boolean bNoLocationVisible = btnNoLocation.getVisibility() == View.VISIBLE;
+                final boolean bPinSelectedShowing = pinSelected.getVisibility() == View.VISIBLE;
+
+                pinSelected.setVisibility(bPinSelectedShowing ? View.GONE : View.VISIBLE);
+                btnLocation.setVisibility(bLocationVisible ? View.GONE : View.VISIBLE);
+
+                // newly visible button has to handle event with ID from marker
+                final int nID = Integer.valueOf(strTitle.replace("Option ", ""));
+                Button buttonUnTag = (Button) findViewById(R.id.btnNoLocation);
+                Button buttonCancel = (Button) findViewById(R.id.btnCancel);
+
+                buttonUnTag.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        TCOption deleteThis = new TCOption();
+                        deleteThis.setID(nID);
+                        sqLiteHelper.deleteTCO(deleteThis);
+                        arg0.remove();
+
+                        // toggle visibility again
+                        pinSelected.setVisibility(View.GONE);
+                        btnLocation.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                buttonCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // toggle visibility again
+                        pinSelected.setVisibility(View.GONE);
+                        btnLocation.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+            return true;
+        }
+    };
+
     private void markLocation(TCOption tcOption) {
         LatLng latLng = new LatLng(tcOption.getLat(), tcOption.getLong());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.title("Option " + String.valueOf(tcOption.getID()));
         markerOptions.position(latLng);
         mMap.addMarker(markerOptions);
+        mMap.setOnMarkerClickListener(mMarkerListener);
     }
 
     // http://stackoverflow.com/questions/35484767/activitycompat-requestpermissions-not-showing-dialog-box
@@ -280,6 +323,7 @@ public class MapsActivity extends FragmentActivity
                     .build();                   // Creates a CameraPosition from the builder
 
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            DrawMarkers50Miles(location);
         }
     }
 
@@ -323,5 +367,4 @@ public class MapsActivity extends FragmentActivity
             }
         });
     }
-
 }
