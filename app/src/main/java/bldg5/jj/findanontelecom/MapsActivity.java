@@ -96,9 +96,10 @@ public class MapsActivity extends FragmentActivity
             } else {
                 requestPermission(android.Manifest.permission.ACCESS_FINE_LOCATION, MY_PERMISSIONS_REQUEST_LOCATION);
             }
-        } else {
-            Toast.makeText(MapsActivity.this, "Permission (already) Granted!", Toast.LENGTH_SHORT).show();
         }
+        /* else {
+            Toast.makeText(MapsActivity.this, "Permission (already) Granted!", Toast.LENGTH_SHORT).show();
+        }*/
 
         // Get last location
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -151,11 +152,11 @@ public class MapsActivity extends FragmentActivity
 
     private class MyLocationListener implements LocationListener {
         public void onLocationChanged(Location location) {
-            String message = String.format(
+            /* String message = String.format(
                     "New Location \n Longitude: %1$s \n Latitude: %2$s",
                     location.getLongitude(), location.getLatitude()
             );
-            Toast.makeText(MapsActivity.this, message, Toast.LENGTH_LONG).show();
+            Toast.makeText(MapsActivity.this, message, Toast.LENGTH_LONG).show();*/
             RedrawPins(location);
         }
 

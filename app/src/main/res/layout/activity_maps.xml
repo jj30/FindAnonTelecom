@@ -35,6 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="@drawable/button_custom"
+        style="@style/ButtonText"
         android:text="@string/tag_location" />
 
     <FrameLayout
@@ -49,6 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|left"
             android:layout_marginRight="10dp"
+            android:background="@drawable/button_custom"
+            style="@style/ButtonText"
             android:text="@string/tag_cancel" />
 
         <Button
@@ -57,6 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_marginLeft="10dp"
+            android:background="@drawable/button_custom"
+            style="@style/ButtonText"
             android:text="@string/tag_no_location" />
     </FrameLayout>
 
