@@ -54,13 +54,15 @@ public class MapsActivity extends FragmentActivity
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private String android_id;
     private AdView mAdView;
-    private final Button btnLocation = (Button) findViewById(R.id.btnLocation);
-    private final Button btnNoLocation = (Button) findViewById(R.id.btnNoLocation);
+    private Button btnLocation;
+    private Button btnNoLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        btnLocation = (Button) findViewById(R.id.btnLocation);
+        btnNoLocation = (Button) findViewById(R.id.btnNoLocation);
 
         // Show the ad
         AdRequest adRequest = new AdRequest.Builder()
@@ -128,27 +130,6 @@ public class MapsActivity extends FragmentActivity
         );
     }
 
-    // http://stackoverflow.com/questions/35484767/activitycompat-requestpermissions-not-showing-dialog-box
-    private void showExplanation(String title,
-                                 String message,
-                                 final String permission,
-                                 final int permissionRequestCode) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        requestPermission(permission, permissionRequestCode);
-                    }
-                });
-        builder.create().show();
-    }
-
-    private void requestPermission(String permissionName, int permissionRequestCode) {
-        ActivityCompat.requestPermissions(this,
-                new String[]{permissionName}, permissionRequestCode);
-    }
-
     private class MyLocationListener implements LocationListener {
         public void onLocationChanged(Location location) {
             String message = String.format(
@@ -160,29 +141,40 @@ public class MapsActivity extends FragmentActivity
             dblLat = location.getLatitude();
             dblLong = location.getLongitude();
 
-            FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+            final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
             List<TCOption> allOptions = sqLiteHelper.getAllTCOs();
 
-            for (TCOption tcOption : allOptions) {
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.title("Option");
-                markerOptions.position(new LatLng(tcOption.getLat(), tcOption.getLong()));
+            for (final TCOption tcOption : allOptions) {
+                markLocation(tcOption);
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
                 {
-
                     @Override
-                    public boolean onMarkerClick(Marker arg0) {
-                        if(arg0.getTitle().equals("Option")) // if marker source is clicked
-                             // Toast.makeText(MapsActivity.this, "YOU CLICKED THE MARKER", Toast.LENGTH_LONG).show();
+                    public boolean onMarkerClick(Marker arg0)
+                    {
+                        if (arg0.getTitle().contains("Option")) {
+                            // if marker source is clicked
+                            // Toast.makeText(MapsActivity.this, "YOU CLICKED THE MARKER", Toast.LENGTH_LONG).show();
                             // switch buttons
-                            btnNoLocation.setVisibility(View.VISIBLE);
-                            btnLocation.setVisibility(View.INVISIBLE);
-                        return true;
-                    }
+                            boolean bLocationVisible = btnLocation.getVisibility() == View.VISIBLE;
+                            boolean bNoLocationVisible = btnNoLocation.getVisibility() == View.VISIBLE;
 
+                            btnNoLocation.setVisibility(bNoLocationVisible ? View.GONE : View.VISIBLE);
+                            btnLocation.setVisibility(bLocationVisible ? View.GONE : View.VISIBLE);
+
+                            Button buttonUnTag = (Button) findViewById(R.id.btnNoLocation);
+
+                            buttonUnTag.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    sqLiteHelper.deleteTCO(tcOption);
+                                    mMap.clear();
+                                }
+                            });
+                        };
+                        return true;
+                    };
                 });
-                mMap.addMarker(markerOptions);
             }
         }
 
@@ -204,6 +196,34 @@ public class MapsActivity extends FragmentActivity
         }
     }
 
+    private void markLocation(TCOption tcOption) {
+        LatLng latLng = new LatLng(tcOption.getLat(), tcOption.getLong());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.title("Option " + String.valueOf(tcOption.getID()));
+        markerOptions.position(latLng);
+        mMap.addMarker(markerOptions);
+    }
+
+    // http://stackoverflow.com/questions/35484767/activitycompat-requestpermissions-not-showing-dialog-box
+    private void showExplanation(String title,
+                                 String message,
+                                 final String permission,
+                                 final int permissionRequestCode) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestPermission(permission, permissionRequestCode);
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void requestPermission(String permissionName, int permissionRequestCode) {
+        ActivityCompat.requestPermissions(this,
+                new String[]{permissionName}, permissionRequestCode);
+    }
 
     /**
      * Manipulates the map once available.
@@ -275,6 +295,7 @@ public class MapsActivity extends FragmentActivity
     public void addListener()
     {
         Button buttonTag = (Button) findViewById(R.id.btnLocation);
+
         buttonTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -294,6 +315,8 @@ public class MapsActivity extends FragmentActivity
 
                 try {
                     sqLiteHelper.createTCOption(tcOption);
+                    markLocation(tcOption);
+
                 } catch (Exception ex) {
                     Log.i("Fantel", ex.getMessage());
                 }

@@ -79,6 +79,7 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 tco = new TCOption();
+                tco.setID(cursor.getInt(0));
                 tco.setLat(cursor.getDouble(1));
                 tco.setLong(cursor.getDouble(2));
                 tco.setActive(cursor.getInt(3));
@@ -107,5 +108,4 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         db.delete(table_main, tco_id + " = ?", new String[] { String.valueOf(tcOption.getID()) });
         db.close();
     }
-
 }
