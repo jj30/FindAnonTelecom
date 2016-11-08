@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
@@ -45,7 +46,6 @@ import java.util.List;
 // https://www.javacodegeeks.com/2010/09/android-location-based-services.html
 public class MapsActivity extends FragmentActivity
         implements OnMapReadyCallback
-        // , GoogleMap.OnMyLocationButtonClickListener
 {
     private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1; // in Meters
     private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000; // in Milliseconds
@@ -152,30 +152,12 @@ public class MapsActivity extends FragmentActivity
 
     private class MyLocationListener implements LocationListener {
         public void onLocationChanged(Location location) {
-            /* String message = String.format(
-                    "New Location \n Longitude: %1$s \n Latitude: %2$s",
-                    location.getLongitude(), location.getLatitude()
-            );
-            Toast.makeText(MapsActivity.this, message, Toast.LENGTH_LONG).show();*/
             RedrawPins(location);
         }
 
-        public void onStatusChanged(String s, int i, Bundle b) {
-            // Toast.makeText(MapsActivity.this, "Provider status changed",
-            //        Toast.LENGTH_LONG).show();
-        }
-
-        public void onProviderDisabled(String s) {
-            // Toast.makeText(MapsActivity.this,
-            //         "Provider disabled by the user. GPS turned off",
-            //         Toast.LENGTH_LONG).show();
-        }
-
-        public void onProviderEnabled(String s) {
-            // Toast.makeText(MapsActivity.this,
-            //         "Provider enabled by the user. GPS turned on",
-            //         Toast.LENGTH_LONG).show();
-        }
+        public void onStatusChanged(String s, int i, Bundle b) { }
+        public void onProviderDisabled(String s) { }
+        public void onProviderEnabled(String s) { }
     }
 
     private void DrawMarkers50Miles(Location location) {
@@ -290,6 +272,7 @@ public class MapsActivity extends FragmentActivity
         criteria.setCostAllowed(true);
         criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
 
+        // , GoogleMap.OnMyLocationButtonClickListener
         // If we don't have permissions, exit ('return')
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -305,7 +288,7 @@ public class MapsActivity extends FragmentActivity
         // LatLng lastLoc = new LatLng(dblLat, dblLong);
 
         mMap = googleMap;
-        mMap.setPadding(50, 5, 0, 0); // left top right bottom
+        // mMap.setPadding(50, 5, 0, 0); // left top right bottom
         // mMap.addMarker(new MarkerOptions().position(lastLoc).title("Last Location"));
         // mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLoc));
         mMap.setMyLocationEnabled(true);
@@ -328,18 +311,10 @@ public class MapsActivity extends FragmentActivity
         }
     }
 
-    /*
-    @Override
-    public boolean onMyLocationButtonClick() {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
-        return false;
-    }*/
-
     public void addListener()
     {
         Button buttonTag = (Button) findViewById(R.id.btnLocation);
+        final Context mContext = this;
 
         buttonTag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -348,22 +323,60 @@ public class MapsActivity extends FragmentActivity
                 int[] location = new int[2];
                 imgV.getLocationOnScreen(location);
 
+                // create a new latLng from the map pin
                 Projection projection = mMap.getProjection();
                 LatLng pinLoc = projection.fromScreenLocation(new Point(location[0], location[1]));
+
+                // create a new location from the LatLng
+                Location lpin = new Location(mprovider);
+                lpin.setLatitude(pinLoc.latitude);
+                lpin.setLongitude(pinLoc.longitude);
+
+                // first thing's first. You cannot tag a location farther than 100 meters
+                float distance = pinsDrawn.distanceTo(lpin);
+                boolean bOutOfSight = distance > 100;
+                if (bOutOfSight) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+                    dialog.setTitle("Invalid Action");
+                    dialog.setCancelable(false);
+                    dialog.setMessage("You cannot tag or untag an\noption out of sight. (100 meters.)");
+                    dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface paramDialogInterface, int id) {
+                            return;
+                        }
+                    });
+                    /* dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });*/
+                    AlertDialog alertDialog = dialog.create();
+                    alertDialog.show();
+
+                    Button pbutton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                    float[] hsv = new float[3];
+                    pbutton.setBackgroundColor(Color.GRAY);
+                    pbutton.setTextColor(Color.WHITE);
+                }
+
+
+                // Projection projection = mMap.getProjection();
+                // LatLng pinLoc = projection.fromScreenLocation(new Point(location[0], location[1]));
                 // Log.i("Fantel", "location x : " + String.valueOf(location[0]) + " location y: " + String.valueOf(location[1]));
+                if (!bOutOfSight) {
+                    FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+                    TCOption tcOption = new TCOption();
+                    tcOption.setLat(pinLoc.latitude);
+                    tcOption.setLong(pinLoc.longitude);
+                    tcOption.setActive(1); // default is 1 for active
 
-                FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-                TCOption tcOption = new TCOption();
-                tcOption.setLat(pinLoc.latitude);
-                tcOption.setLong(pinLoc.longitude);
-                tcOption.setActive(1); // default is 1 for active
+                    try {
+                        sqLiteHelper.createTCOption(tcOption);
+                        markLocation(tcOption);
 
-                try {
-                    sqLiteHelper.createTCOption(tcOption);
-                    markLocation(tcOption);
-
-                } catch (Exception ex) {
-                    Log.i("Fantel", ex.getMessage());
+                    } catch (Exception ex) {
+                        Log.i("Fantel", ex.getMessage());
+                    }
                 }
             }
         });
