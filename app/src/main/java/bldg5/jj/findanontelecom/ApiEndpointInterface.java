@@ -8,5 +8,5 @@ import retrofit2.http.GET;
 
 public interface ApiEndpointInterface {
     @GET("/")
-    Call<ResponseBody> getOptions();
+    Call<List<TCODb>> getOptions();
 }

@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestClient {
 
     private static String BASE_URL = "http://ec2-54-152-182-232.compute-1.amazonaws.com:8080/";
-    public ResponseBody allOptions;
+    public List<TCODb> allOptions;
 
     public RestClient()
     {
@@ -28,7 +28,7 @@ public class RestClient {
 
         ApiEndpointInterface service = retrofit.create(ApiEndpointInterface.class);
         // Call<List<TCODb>> call = service.getOptions();
-        Call<ResponseBody> call = service.getOptions();
+        Call<List<TCODb>> call = service.getOptions();
 
         /* call.enqueue(new Callback<List<TCODb>>() {
             @Override
@@ -43,14 +43,16 @@ public class RestClient {
             }
         });*/
 
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<List<TCODb>>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<List<TCODb>> call, Response<List<TCODb>> response) {
+                boolean bSuccess = response.isSuccessful();
                 allOptions = response.body();
+                Log.i("Fantel", allOptions.toString());
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<List<TCODb>> call, Throwable t) {
                 Log.e("Fantel", t.toString());
             }
         });

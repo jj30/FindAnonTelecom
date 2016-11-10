@@ -169,7 +169,7 @@ public class MapsActivity extends FragmentActivity
         // List<TCOption> allOptions = sqLiteHelper.getAllTCOs();
 
         RestClient getCloudOptions = new RestClient();
-        ResponseBody allOptions = getCloudOptions.allOptions;
+        List<TCODb> allOptions = getCloudOptions.allOptions;
 
         /* for (final ResponseBody tcoDb : allOptions) {
             TCOption tcOption = new TCOption();
