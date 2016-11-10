@@ -41,6 +41,8 @@ import com.google.android.gms.plus.model.people.Person;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
+
 // how to do draggable maps like uber
 // http://stackoverflow.com/questions/27504606/how-to-implement-draggable-map-like-uber-android-update-with-change-location
 // https://www.javacodegeeks.com/2010/09/android-location-based-services.html
@@ -149,7 +151,6 @@ public class MapsActivity extends FragmentActivity
         }
     }
 
-
     private class MyLocationListener implements LocationListener {
         public void onLocationChanged(Location location) {
             RedrawPins(location);
@@ -164,13 +165,17 @@ public class MapsActivity extends FragmentActivity
         dblLat = location.getLatitude();
         dblLong = location.getLongitude();
 
-        final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-        List<TCOption> allOptions = sqLiteHelper.getAllTCOs();
+        // final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+        // List<TCOption> allOptions = sqLiteHelper.getAllTCOs();
 
-        for (final TCOption tcOption : allOptions) {
+        RestClient getCloudOptions = new RestClient();
+        ResponseBody allOptions = getCloudOptions.allOptions;
+
+        /* for (final ResponseBody tcoDb : allOptions) {
+            TCOption tcOption = new TCOption();
             markLocation(tcOption);
             mMap.setOnMarkerClickListener(mMarkerListener);
-        }
+        }*/
     }
 
     private GoogleMap.OnMarkerClickListener mMarkerListener = new GoogleMap.OnMarkerClickListener() {

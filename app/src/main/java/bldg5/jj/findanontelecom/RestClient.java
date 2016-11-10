@@ -1,90 +1,58 @@
 package bldg5.jj.findanontelecom;
 
+import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.io.IOException;
+import java.util.List;
 
-import java.util.concurrent.TimeUnit;
-
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-
 
 public class RestClient {
 
-    private static String BASE_URL = "http://192.168.7.151:8080/";
-    private ApiEndpointInterface postResponse;
+    private static String BASE_URL = "http://ec2-54-152-182-232.compute-1.amazonaws.com:8080/";
+    public ResponseBody allOptions;
 
     public RestClient()
     {
-        OkHttpClient okHttpClient = new OkHttpClient();
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(TCOption.class, new TCOAdapter());
-        gsonBuilder.setPrettyPrinting();
-        Gson gson = gsonBuilder.create();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        postResponse = retrofit.create(ApiEndpointInterface.class);
+        ApiEndpointInterface service = retrofit.create(ApiEndpointInterface.class);
+        // Call<List<TCODb>> call = service.getOptions();
+        Call<ResponseBody> call = service.getOptions();
+
+        /* call.enqueue(new Callback<List<TCODb>>() {
+            @Override
+            public void onResponse(Call<List<TCODb>> call, Response<List<TCODb>> response) {
+                allOptions = response.body();
+                Log.d("Fantel", "Number of options received: " + allOptions.size());
+            }
+
+            @Override
+            public void onFailure(Call<List<TCODb>> call, Throwable t) {
+                Log.e("Fantel", t.toString());
+            }
+        });*/
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                allOptions = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("Fantel", t.toString());
+            }
+        });
     }
-
-    public ApiEndpointInterface getPostResponse()
-    {
-        try
-        {
-            return postResponse;
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
-    }
-
-    /*public void Execute(Context _context) {
-    // OkClient okClient = new OkClient(getOkClient(_context));
-
-        //RestAdapter builder = new RestAdapter.Builder()
-          //      .setEndpoint(strURL)
-            //    .setLogLevel(RestAdapter.LogLevel.FULL)
-              //  .setClient(okClient)
-                //.build();
-
-    RestAdapter builder = createAdapter(_context);
-
-        try {
-
-            ApiEndpointInterface lolwut = builder.create(ApiEndpointInterface.class);
-            Callback<List<Location>> whata = new Callback<List<Location>>() {
-                @Override
-                public void success (List<Location> contributors, Response response){
-                    // got the list of contributors
-                    Log.i("", "TRUE");
-                    //  System.console().writer().write("WHAT");
-                };
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.i("", "FALSE");
-                    // Code for when something went wrong
-                    //  System.console().writer().write("WHAT");
-                }
-            };
-            lolwut.getLocations("HOSP", whata);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 }

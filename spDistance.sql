@@ -17,6 +17,6 @@ BEGIN
                 * COS(ABS(FantelOptions.Latitude) * (PI / 180)) 
                 * POWER(SIN((onelong - FantelOptions.Longitude) * (PI / 180) / 2), 2)
                 )) as distance
-	FROM FantelOptions;
-    -- HAVING distance < 50; 
+	FROM FantelOptions
+    HAVING distance < 50; 
 END
