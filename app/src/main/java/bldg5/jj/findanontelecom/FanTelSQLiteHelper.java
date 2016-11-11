@@ -69,6 +69,7 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
 
         // make values to be inserted
         ContentValues values = new ContentValues();
+        values.put(tco_global_id, tc.getGlobalID());
         values.put(tco_lat, tc.getLatitude());
         values.put(tco_long, tc.getLongitude());
         values.put(tco_user_id, tc.getUserID());
@@ -97,25 +98,6 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         db.insert(table_user, null, values);
     }
 
-    public TCODb readTCO(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(table_main, COLUMNS, " OptionsID = ?", new String[] { String.valueOf(id) }, null, null, null, null);
-
-        // if results !=null, parse the first one
-        if (cursor != null)
-            cursor.moveToFirst();
-
-        TCODb tco = new TCODb();
-        tco.setOptionsID(id);
-        tco.setGlobalID(cursor.getString(1));
-        tco.setLatitude(cursor.getDouble(2));
-        tco.setLongitude(cursor.getDouble(3));
-        tco.setUserID(cursor.getString(4));
-        tco.setDateTagged(cursor.getString(5));
-        tco.setDateUntagged(cursor.getString(6));
-        return tco;
-    }
-
     public List getAllTCOs() {
         List tcos = new LinkedList();
         String query = "SELECT  * FROM " + table_main;
@@ -140,19 +122,6 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         return tcos;
     }
 
-    /* public int updateTCO(TCODb tcoDb) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("lat", tcoDb.getLatitude());
-        values.put("long", tcoDb.getLongitude());
-
-        // update
-        int i = db.update(table_main, values, tco_id + " = ?", new String[] { String.valueOf(tcoDb.getOptionsID()) });
-
-        db.close();
-        return i;
-    }*/
-
     public void deleteTCO(TCODb tcoDb) {
         // get today's date for DateUntagged
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -169,3 +138,38 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 }
+
+
+
+    /*
+    public TCODb readTCO(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(table_main, COLUMNS, " OptionsID = ?", new String[] { String.valueOf(id) }, null, null, null, null);
+
+        // if results !=null, parse the first one
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        TCODb tco = new TCODb();
+        tco.setOptionsID(id);
+        tco.setGlobalID(cursor.getString(1));
+        tco.setLatitude(cursor.getDouble(2));
+        tco.setLongitude(cursor.getDouble(3));
+        tco.setUserID(cursor.getString(4));
+        tco.setDateTagged(cursor.getString(5));
+        tco.setDateUntagged(cursor.getString(6));
+        return tco;
+    }
+
+    public int updateTCO(TCODb tcoDb) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("lat", tcoDb.getLatitude());
+        values.put("long", tcoDb.getLongitude());
+
+        // update
+        int i = db.update(table_main, values, tco_id + " = ?", new String[] { String.valueOf(tcoDb.getOptionsID()) });
+
+        db.close();
+        return i;
+    }*/

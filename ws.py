@@ -6,7 +6,7 @@ class GetOptions(object):
     db_location = "fantel.czkthrrqljas.us-east-1.rds.amazonaws.com"
     db_database_name = "fantel"
     db_user_name = "fantel"
-    db_pwd = ""
+    db_pwd = "fantel23398"
 
     @cherrypy.expose
     def index(self, latitude, longitude):
@@ -14,13 +14,15 @@ class GetOptions(object):
         return all_options
 
     @cherrypy.expose
-    def tag(self, user_id, latitude, longitude):
-        self.SaveToDB(user_id, latitude, longitude)
+    def tag(self, latitude, longitude, userid, datetagged, dateuntagged):
+        self.SaveToDB(latitude, longitude, userid, datetagged, dateuntagged)
 
-    def SaveToDB(self, user_id, latitude, longitude):
+    def SaveToDB(self, latitude, longitude, userid, datetagged, dateuntagged):
         db = pymysql.connect(self.db_location, self.db_user_name, self.db_pwd, self.db_database_name)
         cursor = db.cursor()
-        cursor.execute("call spNewOption({0}, {1}, {2})".format(user_id, latitude, longitude))
+        # exec_string = "call spNewOption({0}, {1}, '{2}', '{3}', '{4}')".format(latitude, longitude, userid, datetagged, dateuntagged)
+        exec_string = "call spNewOption(%s, %s, '%s', '%s', '%s')" % (latitude, longitude, userid, datetagged, dateuntagged)
+        cursor.execute(exec_string)
         db.close()
 
     def getAllFromDB(self, latitude, longitude):

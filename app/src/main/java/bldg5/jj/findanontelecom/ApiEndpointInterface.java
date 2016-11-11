@@ -14,4 +14,13 @@ public interface ApiEndpointInterface {
         @Query("latitude") String latitude,
         @Query("longitude") String longitude
     );
+
+    @GET("/tag")
+    Call<Void> saveToCloud(
+        @Query("latitude") String latitude,
+        @Query("longitude") String longitude,
+        @Query("userid") String userID,
+        @Query("datetagged") String dateTagged,
+        @Query("dateuntagged") String dateUntagged
+    );
 }

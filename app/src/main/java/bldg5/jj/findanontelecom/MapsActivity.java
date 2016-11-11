@@ -63,9 +63,10 @@ public class MapsActivity extends FragmentActivity
     private String android_id;
     private AdView mAdView;
     private Button btnLocation;
-    // private Button btnNoLocation;
+    private boolean bPinsDrawn = false;
     private FrameLayout pinSelected;
     private Location pinsDrawn;
+    public RestClient getCloudOptions = new RestClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,15 +144,16 @@ public class MapsActivity extends FragmentActivity
     private void RedrawPins(Location location) {
         // if new location is within a mile of the init'ed location, don't redraw
         float distance = pinsDrawn.distanceTo(location);
+
         // 1600 meters is roughly one mile
-        if (distance > 1600) {
+        if (distance > 1600 || !bPinsDrawn) {
             // let's synch the cloud and the local db's now
             // options in db? send to cloud. opts in cloud? pull down.
             // at present time, the app only shows options FOR THE CURRENT LOCATION & FROM THE LOCAL DB
-            RestClient getCloudOptions = new RestClient(String.valueOf(dblLat), String.valueOf(dblLong));
 
             DrawMarkers50Miles(location);
             pinsDrawn = location;
+            bPinsDrawn = true;
         }
     }
 
@@ -315,6 +317,11 @@ public class MapsActivity extends FragmentActivity
 
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             DrawMarkers50Miles(location);
+
+            // it's refusing synchronous calls.
+            // so we have to do this asynchronously.
+            getCloudOptions.sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+            getCloudOptions.PullDown(dblLat, dblLong);
         }
     }
 

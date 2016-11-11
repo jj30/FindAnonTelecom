@@ -1,6 +1,8 @@
 package bldg5.jj.findanontelecom;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class TCODb {
@@ -75,13 +77,12 @@ public class TCODb {
         this.optionsID = optionsID;
     }
 
-    public Double getDistance() {
+    /* public Double getDistance() {
         return distance;
     }
-
     public void setDistance(Double distance) {
         this.distance = distance;
-    }
+    }*/
 
     public Double getLongitude() {
         return longitude;
@@ -95,6 +96,30 @@ public class TCODb {
     public String toString()
     {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    @Override
+    public boolean equals(Object objIn) {
+        if(objIn instanceof TCODb){
+            TCODb toCompare = (TCODb) objIn;
+            return  this.getLatitude().equals(toCompare.getLatitude()) &&
+                    this.getLongitude().equals(toCompare.getLongitude()) &&
+                    this.getUserID().equals(toCompare.getUserID()) &&
+                    this.getDateTagged().equals(toCompare.getDateTagged());
+            // this.getGlobalID().equals(toCompare.getGlobalID()) &&
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(globaID)
+                .append(latitude)
+                .append(longitude)
+                .append(userID)
+                .append(dateTagged)
+                .toHashCode();
     }
 }
 
