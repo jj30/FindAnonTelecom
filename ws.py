@@ -6,7 +6,7 @@ class GetOptions(object):
     db_location = "fantel.czkthrrqljas.us-east-1.rds.amazonaws.com"
     db_database_name = "fantel"
     db_user_name = "fantel"
-    db_pwd = "fantel23398"
+    db_pwd = ""
 
     @cherrypy.expose
     def index(self, latitude, longitude):
