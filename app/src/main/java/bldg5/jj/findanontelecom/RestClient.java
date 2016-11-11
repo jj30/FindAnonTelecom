@@ -16,10 +16,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
 
-    private static String BASE_URL = "http://ec2-54-152-182-232.compute-1.amazonaws.com:8080/";
-    public List<TCODb> allOptions;
+    private static String BASE_URL = "http://ec2-174-129-89-160.compute-1.amazonaws.com:8080/";
+    public List<TCODb> allCloudOptions;
 
-    public RestClient()
+    public RestClient(String latitude, String longitude)
     {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -27,28 +27,16 @@ public class RestClient {
                 .build();
 
         ApiEndpointInterface service = retrofit.create(ApiEndpointInterface.class);
-        // Call<List<TCODb>> call = service.getOptions();
-        Call<List<TCODb>> call = service.getOptions();
-
-        /* call.enqueue(new Callback<List<TCODb>>() {
-            @Override
-            public void onResponse(Call<List<TCODb>> call, Response<List<TCODb>> response) {
-                allOptions = response.body();
-                Log.d("Fantel", "Number of options received: " + allOptions.size());
-            }
-
-            @Override
-            public void onFailure(Call<List<TCODb>> call, Throwable t) {
-                Log.e("Fantel", t.toString());
-            }
-        });*/
+        Call<List<TCODb>> call = service.getOptions(latitude, longitude);
 
         call.enqueue(new Callback<List<TCODb>>() {
             @Override
             public void onResponse(Call<List<TCODb>> call, Response<List<TCODb>> response) {
                 boolean bSuccess = response.isSuccessful();
-                allOptions = response.body();
-                Log.i("Fantel", allOptions.toString());
+
+                if (bSuccess) {
+                    allCloudOptions = response.body();
+                }
             }
 
             @Override

@@ -39,6 +39,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.plus.model.people.Person;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -69,7 +72,6 @@ public class MapsActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         btnLocation = (Button) findViewById(R.id.btnLocation);
-        // btnNoLocation = (Button) findViewById(R.id.btnNoLocation);
         pinSelected = (FrameLayout) findViewById(R.id.pinSelected);
 
         // Show the ad
@@ -99,9 +101,6 @@ public class MapsActivity extends FragmentActivity
                 requestPermission(android.Manifest.permission.ACCESS_FINE_LOCATION, MY_PERMISSIONS_REQUEST_LOCATION);
             }
         }
-        /* else {
-            Toast.makeText(MapsActivity.this, "Permission (already) Granted!", Toast.LENGTH_SHORT).show();
-        }*/
 
         // Get last location
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -146,6 +145,11 @@ public class MapsActivity extends FragmentActivity
         float distance = pinsDrawn.distanceTo(location);
         // 1600 meters is roughly one mile
         if (distance > 1600) {
+            // let's synch the cloud and the local db's now
+            // options in db? send to cloud. opts in cloud? pull down.
+            // at present time, the app only shows options FOR THE CURRENT LOCATION & FROM THE LOCAL DB
+            RestClient getCloudOptions = new RestClient(String.valueOf(dblLat), String.valueOf(dblLong));
+
             DrawMarkers50Miles(location);
             pinsDrawn = location;
         }
@@ -165,17 +169,15 @@ public class MapsActivity extends FragmentActivity
         dblLat = location.getLatitude();
         dblLong = location.getLongitude();
 
-        // final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-        // List<TCOption> allOptions = sqLiteHelper.getAllTCOs();
+        final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+        List<TCODb> allOptions = sqLiteHelper.getAllTCOs();
 
-        RestClient getCloudOptions = new RestClient();
-        List<TCODb> allOptions = getCloudOptions.allOptions;
-
-        /* for (final ResponseBody tcoDb : allOptions) {
-            TCOption tcOption = new TCOption();
-            markLocation(tcOption);
-            mMap.setOnMarkerClickListener(mMarkerListener);
-        }*/
+        if (allOptions != null) {
+            for (final TCODb tcoDb : allOptions) {
+                markLocation(tcoDb);
+                mMap.setOnMarkerClickListener(mMarkerListener);
+            }
+        }
     }
 
     private GoogleMap.OnMarkerClickListener mMarkerListener = new GoogleMap.OnMarkerClickListener() {
@@ -202,8 +204,8 @@ public class MapsActivity extends FragmentActivity
                 buttonUnTag.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        TCOption deleteThis = new TCOption();
-                        deleteThis.setID(nID);
+                        TCODb deleteThis = new TCODb();
+                        deleteThis.setOptionsID(nID);
                         sqLiteHelper.deleteTCO(deleteThis);
                         arg0.remove();
 
@@ -226,10 +228,10 @@ public class MapsActivity extends FragmentActivity
         }
     };
 
-    private void markLocation(TCOption tcOption) {
-        LatLng latLng = new LatLng(tcOption.getLat(), tcOption.getLong());
+    private void markLocation(TCODb tcoDb) {
+        LatLng latLng = new LatLng(tcoDb.getLatitude(), tcoDb.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title("Option " + String.valueOf(tcOption.getID()));
+        markerOptions.title("Option " + String.valueOf(tcoDb.getOptionsID()));
         markerOptions.position(latLng);
         mMap.addMarker(markerOptions);
         mMap.setOnMarkerClickListener(mMarkerListener);
@@ -359,7 +361,6 @@ public class MapsActivity extends FragmentActivity
                     alertDialog.show();
 
                     Button pbutton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                    float[] hsv = new float[3];
                     pbutton.setBackgroundColor(Color.GRAY);
                     pbutton.setTextColor(Color.WHITE);
                 }
@@ -370,14 +371,20 @@ public class MapsActivity extends FragmentActivity
                 // Log.i("Fantel", "location x : " + String.valueOf(location[0]) + " location y: " + String.valueOf(location[1]));
                 if (!bOutOfSight) {
                     FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-                    TCOption tcOption = new TCOption();
-                    tcOption.setLat(pinLoc.latitude);
-                    tcOption.setLong(pinLoc.longitude);
-                    tcOption.setActive(1); // default is 1 for active
+
+                    // get today's date
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date = new Date();
+
+                    TCODb tcoDb = new TCODb();
+                    tcoDb.setLatitude(pinLoc.latitude);
+                    tcoDb.setLongitude(pinLoc.longitude);
+                    tcoDb.setUserID(sqLiteHelper.UserID);
+                    tcoDb.setDateTagged(dateFormat.format(date));
 
                     try {
-                        sqLiteHelper.createTCOption(tcOption);
-                        markLocation(tcOption);
+                        sqLiteHelper.createTCODb(tcoDb);
+                        markLocation(tcoDb);
 
                     } catch (Exception ex) {
                         Log.i("Fantel", ex.getMessage());
