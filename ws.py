@@ -6,7 +6,7 @@ class GetOptions(object):
     db_location = "fantel.czkthrrqljas.us-east-1.rds.amazonaws.com"
     db_database_name = "fantel"
     db_user_name = "fantel"
-    db_pwd = "fantel23398"
+    db_pwd = ""
 
     @cherrypy.expose
     def index(self, latitude, longitude):
@@ -18,12 +18,16 @@ class GetOptions(object):
         self.SaveToDB(latitude, longitude, userid, datetagged, dateuntagged)
 
     def SaveToDB(self, latitude, longitude, userid, datetagged, dateuntagged):
-        db = pymysql.connect(self.db_location, self.db_user_name, self.db_pwd, self.db_database_name)
-        cursor = db.cursor()
-        # exec_string = "call spNewOption({0}, {1}, '{2}', '{3}', '{4}')".format(latitude, longitude, userid, datetagged, dateuntagged)
-        exec_string = "call spNewOption(%s, %s, '%s', '%s', '%s')" % (latitude, longitude, userid, datetagged, dateuntagged)
-        cursor.execute(exec_string)
-        db.close()
+        try:
+            db = pymysql.connect(self.db_location, self.db_user_name, self.db_pwd, self.db_database_name)
+            cursor = db.cursor()
+            exec_string = "call spNewOption(%s, %s, '%s', '%s', '%s')" % (
+                latitude, longitude, userid, datetagged, dateuntagged)
+            cursor.execute(exec_string)
+            db.commit()
+            db.close()
+        except Exception as ex:
+            print(ex)
 
     def getAllFromDB(self, latitude, longitude):
         db = pymysql.connect(self.db_location, self.db_user_name, self.db_pwd, self.db_database_name)
@@ -56,5 +60,8 @@ class GetOptions(object):
         return json.dumps(final_json)
 
 if __name__ == '__main__':
+    cherrypy.config.update({'log.screen': True,
+                        'log.access_file': 'ax.log',
+                        'log.error_file': 'err.log'})
     cherrypy.config.update({'server.socket_host': '0.0.0.0', 'server.socket_port': 8080, })
     cherrypy.quickstart(GetOptions())
