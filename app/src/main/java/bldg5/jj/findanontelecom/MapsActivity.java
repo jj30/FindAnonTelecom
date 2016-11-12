@@ -172,7 +172,7 @@ public class MapsActivity extends FragmentActivity
         dblLong = location.getLongitude();
 
         final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-        List<TCODb> allOptions = sqLiteHelper.getAllTCOs();
+        List<TCODb> allOptions = sqLiteHelper.getAllTCOs(true);
 
         if (allOptions != null) {
             for (final TCODb tcoDb : allOptions) {
@@ -370,13 +370,10 @@ public class MapsActivity extends FragmentActivity
                     Button pbutton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
                     pbutton.setBackgroundColor(Color.GRAY);
                     pbutton.setTextColor(Color.WHITE);
-                }
-
-
-                // Projection projection = mMap.getProjection();
-                // LatLng pinLoc = projection.fromScreenLocation(new Point(location[0], location[1]));
-                // Log.i("Fantel", "location x : " + String.valueOf(location[0]) + " location y: " + String.valueOf(location[1]));
-                if (!bOutOfSight) {
+                } else {
+                    // Projection projection = mMap.getProjection();
+                    // LatLng pinLoc = projection.fromScreenLocation(new Point(location[0], location[1]));
+                    // Log.i("Fantel", "location x : " + String.valueOf(location[0]) + " location y: " + String.valueOf(location[1]));
                     FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
 
                     // get today's date

@@ -2,6 +2,8 @@ package bldg5.jj.findanontelecom;
 
 import android.util.Log;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -16,9 +18,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
 
-    private static String BASE_URL = "http://ec2-54-162-115-46.compute-1.amazonaws.com:8080/";
+    private static String BASE_URL = "http://ec2-54-210-162-199.compute-1.amazonaws.com:8080/";
     public List<TCODb> allCloudOptions;
     public FanTelSQLiteHelper sqLiteHelper;
+    public String strResponse;
 
     public void PullDown(double latitude, double longitude)
     {
@@ -68,23 +71,27 @@ public class RestClient {
                 .build();
 
         ApiEndpointInterface service = retrofit.create(ApiEndpointInterface.class);
-        Call<Void> call = service.saveToCloud(strLatitude, strLongitude, strUserID, strDateTagged, strDateUntagged);
+        Call<String> call = service.saveToCloud(strLatitude, strLongitude, strUserID, strDateTagged, strDateUntagged);
 
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 boolean bSuccess = response.isSuccessful();
+
+                if (bSuccess) {
+                    strResponse = response.body();
+                }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.e("Fantel", t.toString());
             }
         });
     }
 
     private void synch() {
-        List<TCODb> localDBOptions = sqLiteHelper.getAllTCOs();
+        List<TCODb> localDBOptions = sqLiteHelper.getAllTCOs(false);
 
         // save cloud option to local db
         for (TCODb tc : allCloudOptions) {
@@ -95,9 +102,8 @@ public class RestClient {
 
         // save local db option to cloud
         for (TCODb tc : localDBOptions) {
-            if (!allCloudOptions.contains(tc)) {
-                SendToCloud(tc);
-            }
+            // kluge alert: we should send only deltas to the cloud.
+            SendToCloud(tc);
         }
     }
 }

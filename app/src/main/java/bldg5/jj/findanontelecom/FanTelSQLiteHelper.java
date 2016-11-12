@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.Settings;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -65,6 +66,16 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
 
     public void createTCODb(TCODb tc)
     {
+        // first check if the global id is already local.
+        // if so it means that the cloud does not yet know the option was untagged.
+        String strGlobalID = tc.getGlobalID();
+        TCODb getTCOByGlobalID = readTCO(strGlobalID);
+
+        if (getTCOByGlobalID != null) {
+            // then we found it in the local db
+            return;
+        }
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         // make values to be inserted
@@ -74,10 +85,10 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         values.put(tco_long, tc.getLongitude());
         values.put(tco_user_id, tc.getUserID());
         values.put(tco_date_tagged, tc.getDateTagged());
-        values.put(tco_date_untagged, tc.getDateUntagged());
 
         // insert tc option
-        db.insert(table_main, null, values);
+        int nOptionID = (int) db.insert(table_main, null, values);
+        tc.setOptionsID(nOptionID);
 
         // close database transaction
         db.close();
@@ -98,11 +109,12 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         db.insert(table_user, null, values);
     }
 
-    public List getAllTCOs() {
+    public List getAllTCOs(boolean bDraw) {
         List tcos = new LinkedList();
         String query = "SELECT  * FROM " + table_main;
+        String where = bDraw ? " WHERE DateUntagged ='None' OR DateUntagged IS NULL" : "";
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query + where, null);
         TCODb tco = null;
 
         if (cursor.moveToFirst()) {
@@ -128,48 +140,52 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         Date date = new Date();
 
         SQLiteDatabase db = this.getWritableDatabase();
-
-        // db.delete(table_main, tco_id + " = ?", new String[] { String.valueOf(tcoDb.getOptionsID()) });
-        // soft delete
         ContentValues values = new ContentValues();
         values.put("DateUntagged", dateFormat.format(date));
         db.update(table_main, values, tco_id + " = ?", new String[] { String.valueOf(tcoDb.getOptionsID()) });
 
         db.close();
     }
-}
 
+    public void obliterateTCO(TCODb tcoDb) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(table_main, tco_global_id + " = ?", new String[] { String.valueOf(tcoDb.getGlobalID()) });
+        db.close();
+    }
 
-
-    /*
-    public TCODb readTCO(int id) {
+    public TCODb readTCO(String strGlobalId) {
+        //  String strStatement = "SELECT * FROM " + table_main + " WHERE GlobalID = '" + strGlobalId + "';";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(table_main, COLUMNS, " OptionsID = ?", new String[] { String.valueOf(id) }, null, null, null, null);
-
-        // if results !=null, parse the first one
-        if (cursor != null)
-            cursor.moveToFirst();
-
+        Cursor cursor = db.query(table_main, COLUMNS, " GlobalID = ?", new String[] { String.valueOf(strGlobalId) }, null, null, null, null);
+        // Cursor cursor = db.rawQuery(strStatement, null);
         TCODb tco = new TCODb();
-        tco.setOptionsID(id);
-        tco.setGlobalID(cursor.getString(1));
-        tco.setLatitude(cursor.getDouble(2));
-        tco.setLongitude(cursor.getDouble(3));
-        tco.setUserID(cursor.getString(4));
-        tco.setDateTagged(cursor.getString(5));
-        tco.setDateUntagged(cursor.getString(6));
+
+        try {
+            cursor.moveToFirst();
+            tco.setOptionsID(cursor.getInt(0));
+            tco.setGlobalID(cursor.getString(1));
+            tco.setLatitude(cursor.getDouble(2));
+            tco.setLongitude(cursor.getDouble(3));
+            tco.setUserID(cursor.getString(4));
+            tco.setDateTagged(cursor.getString(5));
+            tco.setDateUntagged(cursor.getString(6));
+        } catch(Exception ex) {
+            tco = null;
+            Log.e("FANTEL", ex.toString());
+        }
+
         return tco;
     }
 
-    public int updateTCO(TCODb tcoDb) {
+    /* public int untagTCO(TCODb tcoDb) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("lat", tcoDb.getLatitude());
-        values.put("long", tcoDb.getLongitude());
+        values.put("DateUntagged", tcoDb.getDateUntagged());
 
         // update
-        int i = db.update(table_main, values, tco_id + " = ?", new String[] { String.valueOf(tcoDb.getOptionsID()) });
+        int i = db.update(table_main, values, tco_date_untagged + " = ?", new String[] { String.valueOf(tcoDb.getDateUntagged()) });
 
         db.close();
         return i;
     }*/
+}

@@ -16,7 +16,7 @@ public interface ApiEndpointInterface {
     );
 
     @GET("/tag")
-    Call<Void> saveToCloud(
+    Call<String> saveToCloud(
         @Query("latitude") String latitude,
         @Query("longitude") String longitude,
         @Query("userid") String userID,

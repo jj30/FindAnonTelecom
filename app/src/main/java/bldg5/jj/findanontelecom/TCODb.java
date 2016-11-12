@@ -102,11 +102,13 @@ public class TCODb {
     public boolean equals(Object objIn) {
         if(objIn instanceof TCODb){
             TCODb toCompare = (TCODb) objIn;
-            return  this.getLatitude().equals(toCompare.getLatitude()) &&
+
+            return  this.getGlobalID().equals(toCompare.getGlobalID()) &&
+                    this.getLatitude().equals(toCompare.getLatitude()) &&
                     this.getLongitude().equals(toCompare.getLongitude()) &&
                     this.getUserID().equals(toCompare.getUserID()) &&
                     this.getDateTagged().equals(toCompare.getDateTagged());
-            // this.getGlobalID().equals(toCompare.getGlobalID()) &&
+                    // this.getDateUntagged().equals(toCompare.getDateUntagged());
         }
         return false;
     }
