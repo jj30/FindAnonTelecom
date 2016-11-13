@@ -77,7 +77,7 @@ public class MapsActivity extends FragmentActivity
 
         // Show the ad
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(android_id)
+                // .addTestDevice(android_id)
                 .build();
 
         android_id =  Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);

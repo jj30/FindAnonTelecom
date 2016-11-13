@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -34,8 +35,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'org.apache.commons:commons-lang3:3.4'
 }
-
-
-
 
 apply plugin: 'com.google.gms.google-services'
