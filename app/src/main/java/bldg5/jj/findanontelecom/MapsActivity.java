@@ -50,8 +50,7 @@ import okhttp3.ResponseBody;
 // http://stackoverflow.com/questions/27504606/how-to-implement-draggable-map-like-uber-android-update-with-change-location
 // https://www.javacodegeeks.com/2010/09/android-location-based-services.html
 public class MapsActivity extends FragmentActivity
-        implements OnMapReadyCallback
-{
+        implements OnMapReadyCallback {
     private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1; // in Meters
     private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000; // in Milliseconds
     protected GoogleMap mMap;
@@ -80,7 +79,7 @@ public class MapsActivity extends FragmentActivity
                 // .addTestDevice(android_id)
                 .build();
 
-        android_id =  Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        android_id = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-1882113672777118~7688775386");
         // I/Ads: Use AdRequest.Builder.addTestDevice("CA9D245DFDA0DE28135B9132BCF6089F") to get test ads on this device.
         mAdView = (AdView) findViewById(R.id.adView);
@@ -139,6 +138,18 @@ public class MapsActivity extends FragmentActivity
                 MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
                 new MyLocationListener()
         );
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(mprovider);
+        pinsDrawn = location;
     }
 
     private void RedrawPins(Location location) {
@@ -229,15 +240,6 @@ public class MapsActivity extends FragmentActivity
             return true;
         }
     };
-
-    private void markLocation(TCODb tcoDb) {
-        LatLng latLng = new LatLng(tcoDb.getLatitude(), tcoDb.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title("Option " + String.valueOf(tcoDb.getOptionsID()));
-        markerOptions.position(latLng);
-        mMap.addMarker(markerOptions);
-        mMap.setOnMarkerClickListener(mMarkerListener);
-    }
 
     // http://stackoverflow.com/questions/35484767/activitycompat-requestpermissions-not-showing-dialog-box
     private void showExplanation(String title,
@@ -396,5 +398,14 @@ public class MapsActivity extends FragmentActivity
                 }
             }
         });
+    }
+
+    private void markLocation(TCODb tcoDb) {
+        LatLng latLng = new LatLng(tcoDb.getLatitude(), tcoDb.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.title("Option " + String.valueOf(tcoDb.getOptionsID()));
+        markerOptions.position(latLng);
+        mMap.addMarker(markerOptions);
+        mMap.setOnMarkerClickListener(mMarkerListener);
     }
 }
