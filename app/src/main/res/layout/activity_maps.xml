@@ -65,7 +65,7 @@
             android:text="@string/tag_cancel" />
 
         <Button
-            android:id="@+id/btnShowStView"
+            android:id="@+id/btnGetStreetView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"

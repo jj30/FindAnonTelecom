@@ -47,8 +47,9 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_MAIN_TABLE = "CREATE TABLE 'FantelMain' ('OptionsID' INTEGER, 'GlobalID' TEXT, 'Latitude' TEXT, " +
-                "'Longitude' TEXT, 'UserID' TEXT, 'DateTagged' TEXT, 'DateUntagged' TEXT, 'Distance' REAL, PRIMARY KEY(OptionsID));";
+        String CREATE_MAIN_TABLE = "CREATE TABLE 'FantelMain' ('OptionsID' INTEGER, 'GlobalID' TEXT, 'Latitude' TEXT," +
+                " 'Longitude' TEXT, 'UserID' TEXT, 'DateTagged' TEXT, 'DateUntagged' TEXT, 'Distance' REAL," +
+                " 'Bearing' REAL,  'Tilt' REAL,  'Zoom' REAL, PRIMARY KEY(OptionsID));";
         String CREATE_USER_TABLE = "CREATE TABLE 'User' ('UserID' String, 'DateCreated' TEXT);";
 
         db.execSQL(CREATE_MAIN_TABLE);
@@ -182,16 +183,4 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
 
         return tco;
     }
-
-    /* public int untagTCO(TCODb tcoDb) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("DateUntagged", tcoDb.getDateUntagged());
-
-        // update
-        int i = db.update(table_main, values, tco_date_untagged + " = ?", new String[] { String.valueOf(tcoDb.getDateUntagged()) });
-
-        db.close();
-        return i;
-    }*/
 }

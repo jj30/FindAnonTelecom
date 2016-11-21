@@ -8,8 +8,8 @@
     <string name="start_level">Level 1</string>
     <string name="tag_location">Tag Location</string>
     <string name="find_nearest">Nearest Option</string>
-    <string name="tag_street_view">Tag St. View</string>
-    <string name="show_street_view">St. View</string>
+    <string name="tag_street_view">Tag Street View</string>
+    <string name="show_street_view">Street View</string>
     <string name="tag_no_location">Untag</string>
     <string name="tag_cancel">Cancel</string>
     <!-- -
@@ -22,8 +22,5 @@
     <string name="title_activity_gmaps">Map</string>
     <string name="title_activity_gps">GPSActivity</string>
     <string name="title_activity_street_view">StreetView</string>
-    <string name="navigate_to_another_panorama">navigate to another panorama</string>
-    <string name="pan_camera">pan camera</string>
-    <string name="tap_screen">tap screen</string>
-    <string name="long_press_screen">long press screen</string>
+    <string name="panorama_not_ready">Street view not ready yet.</string>
 </resources>

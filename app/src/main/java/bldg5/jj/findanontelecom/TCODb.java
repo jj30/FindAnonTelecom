@@ -24,12 +24,21 @@ public class TCODb {
     @SerializedName("GlobalID")
     @Expose
     private String globaID;
-    @SerializedName("distance")
+    @SerializedName("Distance")
     @Expose
     private Double distance;
     @SerializedName("Longitude")
     @Expose
     private Double longitude;
+    @SerializedName("Bearing")
+    @Expose
+    private float bearing;
+    @SerializedName("Tilt")
+    @Expose
+    private float tilt;
+    @SerializedName("Zoom")
+    @Expose
+    private float zoom;
 
     public Double getLatitude() {
         return latitude;
@@ -77,8 +86,7 @@ public class TCODb {
         this.optionsID = optionsID;
     }
 
-    public Double getDistance() { return distance;
-    }
+    public Double getDistance() { return distance; }
 
     public void setDistance(Double distance) {
         this.distance = distance;
@@ -90,6 +98,30 @@ public class TCODb {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public Float getBearing() {
+        return bearing;
+    }
+
+    public void setBearing(Float bearing) {
+        this.bearing = bearing;
+    }
+
+    public Float getTilt() {
+        return tilt;
+    }
+
+    public void setTilt(Float tilt) {
+        this.tilt = tilt;
+    }
+
+    public Float getZoom() {
+        return zoom;
+    }
+
+    public void setZoom(Float zoom) {
+        this.zoom = zoom;
     }
 
     @Override

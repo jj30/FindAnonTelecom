@@ -10,8 +10,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.provider.Settings;
-import android.renderscript.Double2;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -22,7 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -37,7 +35,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.plus.model.people.Person;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -60,7 +57,7 @@ public class MapsActivity extends FragmentActivity
     protected Double dblLong = 0.0;
     String mprovider;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-    private String android_id;
+    // private String android_id;
     private AdView mAdView;
     private Button btnLocation;
     private Button btnNearest;
@@ -84,7 +81,7 @@ public class MapsActivity extends FragmentActivity
                 // .addTestDevice(android_id)
                 .build();
 
-        android_id = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        // android_id = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-1882113672777118~7688775386");
         // I/Ads: Use AdRequest.Builder.addTestDevice("CA9D245DFDA0DE28135B9132BCF6089F") to get test ads on this device.
         mAdView = (AdView) findViewById(R.id.adView);
@@ -342,6 +339,7 @@ public class MapsActivity extends FragmentActivity
     {
         Button btnTag = (Button) findViewById(R.id.btnLocation);
         Button btnNearest = (Button) findViewById(R.id.btnNearest);
+        Button btnGetStreetView = (Button) findViewById(R.id.btnGetStreetView);
         final Context mContext = this;
 
         btnTag.setOnClickListener(new View.OnClickListener() {
@@ -403,8 +401,13 @@ public class MapsActivity extends FragmentActivity
                         // now go tag the street view
                         Intent tagStreetView = new Intent(MapsActivity.this, StreetView.class);
 
-                        tagStreetView.putExtra("latitude", String.valueOf(pinsDrawn.getLatitude()));
-                        tagStreetView.putExtra("longitude", String.valueOf(pinsDrawn.getLongitude()));
+                        Bundle bPassVals = new Bundle();
+                        bPassVals.putString("mode", "tag");
+                        bPassVals.putDouble("latitude", pinsDrawn.getLatitude());
+                        bPassVals.putDouble("longitude", pinsDrawn.getLongitude());
+
+                        tagStreetView.putExtras(bPassVals);
+
                         MapsActivity.this.startActivity(tagStreetView);
 
                     } catch (Exception ex) {
@@ -417,7 +420,7 @@ public class MapsActivity extends FragmentActivity
         btnNearest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (allDBOptions == null && allDBOptions.size() > 0) {
+                if (allDBOptions == null || allDBOptions.size() == 0) {
                     // there are no options, therefore no 'nearest' one
                     Context context = getApplicationContext();
                     CharSequence text = "There are no nearby options.";
@@ -439,6 +442,25 @@ public class MapsActivity extends FragmentActivity
 
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 }
+            }
+        });
+
+        btnGetStreetView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bPassVals = new Bundle();
+
+                bPassVals.putString("mode", "show");
+                bPassVals.putDouble("latitude", pinsDrawn.getLatitude());
+                bPassVals.putDouble("longitude", pinsDrawn.getLongitude());
+                bPassVals.putFloat("bearing", 66.80949f);
+                bPassVals.putFloat("tilt", -0.7351023f);
+                bPassVals.putFloat("zoom", 2.0f);
+
+                Intent showStView = new Intent(MapsActivity.this, StreetView.class);
+                showStView.putExtras(bPassVals);
+
+                MapsActivity.this.startActivity(showStView);
             }
         });
     }

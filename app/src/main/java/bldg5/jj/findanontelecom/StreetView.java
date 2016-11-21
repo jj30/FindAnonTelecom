@@ -10,7 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
@@ -30,46 +33,24 @@ public class StreetView extends AppCompatActivity
     private static LatLng LocationLatLng;
     private StreetViewPanorama mStreetViewPanorama;
 
-    private TextView mPanoChangeTimesTextView;
-
-    private TextView mPanoCameraChangeTextView;
-
-    private TextView mPanoClickTextView;
-
-    private TextView mPanoLongClickTextView;
-
-    private int mPanoChangeTimes = 0;
-
-    private int mPanoCameraChangeTimes = 0;
-
-    private int mPanoClickTimes = 0;
-
-    private int mPanoLongClickTimes = 0;
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_street_view);
 
-        mPanoChangeTimesTextView = (TextView) findViewById(R.id.change_pano);
-        mPanoCameraChangeTextView = (TextView) findViewById(R.id.change_camera);
-        mPanoClickTextView = (TextView) findViewById(R.id.click_pano);
-        mPanoLongClickTextView = (TextView) findViewById(R.id.long_click_pano);
+        final Button btnSetStreetView = (Button) findViewById(R.id.btnSetStreetView);
 
         Intent intent = getIntent();
-        String strLatitude = intent.getStringExtra("latitude");
-        String strLongitude = intent.getStringExtra("longitude");
-        Double dblLatitude = 0.0d;
-        Double dblLongitude = 0.0d;
+        Bundle getValues = intent.getExtras();
 
-        try {
-            dblLatitude = Double.parseDouble(strLatitude);
-            dblLongitude = Double.parseDouble(strLongitude);
-        } catch(ClassCastException exception) {
-            Log.e("FANTEL", "string longitude or latitude to double exception:: " + exception.toString());
-        } finally {
-            LocationLatLng = new LatLng(dblLatitude, dblLongitude);
-        }
+        final String strMode = getValues.getString("mode");
+        final Float flBearing = getValues.getFloat("bearing");
+        final Float flTilt = getValues.getFloat("tilt");
+        final Float flZoom = getValues.getFloat("zoom");
+        final Double dblLatitude = getValues.getDouble("latitude");
+        final Double dblLongitude = getValues.getDouble("longitude");
+
+        LocationLatLng = new LatLng(dblLatitude, dblLongitude);
 
         SupportStreetViewPanoramaFragment streetViewPanoramaFragment =
                 (SupportStreetViewPanoramaFragment) getSupportFragmentManager().findFragmentById(R.id.streetviewpanorama);
@@ -92,25 +73,55 @@ public class StreetView extends AppCompatActivity
 
                         Log.i("FANTEL", "Panorama changed::panorama.getLocation():: " + panorama.getLocation());
                         Log.i("FANTEL", "Panorama changed::panorama.getPanoramaCamera():: " + panorama.getPanoramaCamera());
+
+                        if (!checkReady()) {
+                            return;
+                        } else {
+                            // two modes "show" and "tag"
+                            if (strMode.equals("show")) {
+                                mStreetViewPanorama.animateTo(
+                                        new StreetViewPanoramaCamera.Builder()
+                                                .zoom(flZoom)
+                                                .tilt(flTilt)
+                                                .bearing(flBearing)
+                                                .build(), 1000L);
+
+                                btnSetStreetView.setVisibility(View.INVISIBLE);
+                            }
+                        }
                     }
                 });
+
+        btnSetStreetView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View view){
+                StreetViewPanoramaCamera currCamera = mStreetViewPanorama.getPanoramaCamera();
+                Float bearing = currCamera.bearing;
+                Float tilt = currCamera.tilt;
+                Float zoom = currCamera.zoom;
+
+                Log.i("FANTEL", "bearing: " + String.valueOf(bearing));
+                Log.i("FANTEL", "tilt: " + String.valueOf(tilt));
+                Log.i("FANTEL", "zoom: " + String.valueOf(zoom));
+            }
+        });
     }
 
     @Override
     public void onStreetViewPanoramaChange(StreetViewPanoramaLocation location) {
         if (location != null) {
-            mPanoChangeTimesTextView.setText("Times panorama changed=" + ++mPanoChangeTimes);
+            // mPanoChangeTimesTextView.setText("Times panorama changed=" + ++mPanoChangeTimes);
         }
     }
 
     @Override
     public void onStreetViewPanoramaCameraChange(StreetViewPanoramaCamera camera) {
-        mPanoCameraChangeTextView.setText("Times camera changed=" + ++mPanoCameraChangeTimes);
+        // mPanoCameraChangeTextView.setText("Times camera changed=" + ++mPanoCameraChangeTimes);
     }
 
     @Override
     public void onStreetViewPanoramaClick(StreetViewPanoramaOrientation orientation) {
-        Point point = mStreetViewPanorama.orientationToPoint(orientation);
+        /* Point point = mStreetViewPanorama.orientationToPoint(orientation);
         if (point != null) {
             mPanoClickTimes++;
             mPanoClickTextView.setText(
@@ -120,7 +131,7 @@ public class StreetView extends AppCompatActivity
                             .orientation(orientation)
                             .zoom(mStreetViewPanorama.getPanoramaCamera().zoom)
                             .build(), 1000);
-        }
+        }*/
 
         Log.i("FANTEL", "streetViewPanoramaCamera.bearing:: " + orientation.bearing);
         Log.i("FANTEL", "streetViewPanoramaCamera.getOrientation():: " + orientation.toString());
@@ -128,11 +139,19 @@ public class StreetView extends AppCompatActivity
 
     @Override
     public void onStreetViewPanoramaLongClick(StreetViewPanoramaOrientation orientation) {
-        Point point = mStreetViewPanorama.orientationToPoint(orientation);
+        /* Point point = mStreetViewPanorama.orientationToPoint(orientation);
         if (point != null) {
             mPanoLongClickTimes++;
             mPanoLongClickTextView.setText(
                     "Times long clicked=" + mPanoLongClickTimes + " : " + point.toString());
+        }*/
+    }
+
+    private boolean checkReady() {
+        if (mStreetViewPanorama == null) {
+            Toast.makeText(this, R.string.panorama_not_ready, Toast.LENGTH_SHORT).show();
+            return false;
         }
+        return true;
     }
 }
