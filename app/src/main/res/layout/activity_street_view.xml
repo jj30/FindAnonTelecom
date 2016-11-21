@@ -8,6 +8,11 @@
     tools:context="bldg5.jj.findanontelecom.StreetView">
 
     <include layout="@layout/content_street_view" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
 
     <Button
         android:id="@+id/btnStreetView"
@@ -18,4 +23,33 @@
         android:background="@drawable/button_custom"
         style="@style/ButtonText"
         android:text="@string/show_street_view" />
+
+
+
+
+
+    <TextView
+        android:id="@+id/change_pano"
+        android:text="@string/navigate_to_another_panorama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/change_camera"
+        android:text="@string/pan_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/click_pano"
+        android:text="@string/tap_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/long_click_pano"
+        android:text="@string/long_press_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

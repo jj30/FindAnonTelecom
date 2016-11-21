@@ -21,4 +21,8 @@
     <string name="title_activity_gmaps">Map</string>
     <string name="title_activity_gps">GPSActivity</string>
     <string name="title_activity_street_view">StreetView</string>
+    <string name="navigate_to_another_panorama">navigate to another panorama</string>
+    <string name="pan_camera">pan camera</string>
+    <string name="tap_screen">tap screen</string>
+    <string name="long_press_screen">long press screen</string>
 </resources>
