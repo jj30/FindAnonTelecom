@@ -41,6 +41,7 @@ import com.google.android.gms.plus.model.people.Person;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +66,7 @@ public class MapsActivity extends FragmentActivity
     private boolean bPinsDrawn = false;
     private FrameLayout pinSelected;
     private Location pinsDrawn;
+    private ArrayList<LatLng> allPinsByLatLong = new ArrayList<LatLng>();
     public RestClient getCloudOptions = new RestClient();
 
     @Override
@@ -148,6 +150,8 @@ public class MapsActivity extends FragmentActivity
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        Criteria criteria = new Criteria();
+        mprovider = locationManager.getBestProvider(criteria, false);
         Location location = locationManager.getLastKnownLocation(mprovider);
         pinsDrawn = location;
     }
@@ -176,21 +180,6 @@ public class MapsActivity extends FragmentActivity
         public void onStatusChanged(String s, int i, Bundle b) { }
         public void onProviderDisabled(String s) { }
         public void onProviderEnabled(String s) { }
-    }
-
-    private void DrawMarkers50Miles(Location location) {
-        dblLat = location.getLatitude();
-        dblLong = location.getLongitude();
-
-        final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-        List<TCODb> allOptions = sqLiteHelper.getAllTCOs(true);
-
-        if (allOptions != null) {
-            for (final TCODb tcoDb : allOptions) {
-                markLocation(tcoDb);
-                mMap.setOnMarkerClickListener(mMarkerListener);
-            }
-        }
     }
 
     private GoogleMap.OnMarkerClickListener mMarkerListener = new GoogleMap.OnMarkerClickListener() {
@@ -318,18 +307,35 @@ public class MapsActivity extends FragmentActivity
                     .build();                   // Creates a CameraPosition from the builder
 
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            DrawMarkers50Miles(location);
 
-            // it's refusing synchronous calls.
-            // so we have to do this asynchronously.
+            // get the options from the cloud
             getCloudOptions.sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
             getCloudOptions.PullDown(dblLat, dblLong);
+
+            // draw the markers from the cloud, now in the local DB
+            DrawMarkers50Miles(location);
+        }
+    }
+
+    private void DrawMarkers50Miles(Location location) {
+        dblLat = location.getLatitude();
+        dblLong = location.getLongitude();
+
+        final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+        List<TCODb> allOptions = sqLiteHelper.getAllTCOs(true);
+
+        if (allOptions != null) {
+            for (final TCODb tcoDb : allOptions) {
+                markLocation(tcoDb);
+                mMap.setOnMarkerClickListener(mMarkerListener);
+            }
         }
     }
 
     public void addListener()
     {
         Button buttonTag = (Button) findViewById(R.id.btnLocation);
+        // Button buttonTagStreetView = (Button) findViewById(R.id.btnStreetView);
         final Context mContext = this;
 
         buttonTag.setOnClickListener(new View.OnClickListener() {
@@ -361,11 +367,7 @@ public class MapsActivity extends FragmentActivity
                             return;
                         }
                     });
-                    /* dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });*/
+
                     AlertDialog alertDialog = dialog.create();
                     alertDialog.show();
 
@@ -392,20 +394,43 @@ public class MapsActivity extends FragmentActivity
                         sqLiteHelper.createTCODb(tcoDb);
                         markLocation(tcoDb);
 
+                        // now go tag the street view
+                        Intent tagStreetView = new Intent(MapsActivity.this, StreetView.class);
+
+                        tagStreetView.putExtra("latitude", String.valueOf(pinsDrawn.getLatitude()));
+                        tagStreetView.putExtra("longitude", String.valueOf(pinsDrawn.getLongitude()));
+                        MapsActivity.this.startActivity(tagStreetView);
+
                     } catch (Exception ex) {
                         Log.i("Fantel", ex.getMessage());
                     }
                 }
             }
         });
+
+        /* buttonTagStreetView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });*/
     }
 
     private void markLocation(TCODb tcoDb) {
-        LatLng latLng = new LatLng(tcoDb.getLatitude(), tcoDb.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
+        LatLng latLng = new LatLng(tcoDb.getLatitude(), tcoDb.getLongitude());
         markerOptions.title("Option " + String.valueOf(tcoDb.getOptionsID()));
         markerOptions.position(latLng);
-        mMap.addMarker(markerOptions);
-        mMap.setOnMarkerClickListener(mMarkerListener);
+
+        // Check if it already has been added -- we are only checking by lat long.
+        // This means that the list of markers won't have the "Option Title"
+        if (allPinsByLatLong.contains(latLng)) {
+            Log.i("FANTEL", "Attempt to dupe marker: latitude: " + String.valueOf(tcoDb.getLatitude()) +
+                    " longitude: " + String.valueOf(tcoDb.getLongitude()) +
+                    " OptionID: " + String.valueOf(tcoDb.getOptionsID()));
+        } else {
+            mMap.addMarker(markerOptions);
+            mMap.setOnMarkerClickListener(mMarkerListener);
+            allPinsByLatLong.add(latLng);
+        }
     }
 }

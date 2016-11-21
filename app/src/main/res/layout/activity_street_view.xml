@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="bldg5.jj.findanontelecom.StreetView">
+
+    <include layout="@layout/content_street_view" />
+
+    <Button
+        android:id="@+id/btnStreetView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/button_custom"
+        style="@style/ButtonText"
+        android:text="@string/show_street_view" />
+</android.support.design.widget.CoordinatorLayout>
