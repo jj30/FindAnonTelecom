@@ -16,7 +16,7 @@ import java.util.List;
 
 // https://examples.javacodegeeks.com/android/core/database/android-database-example/
 public class FanTelSQLiteHelper extends SQLiteOpenHelper {
-    private static final int database_VERSION = 1;
+    private static final int database_VERSION = 2;
     private static final String database_NAME = "FANTEL";
 
     private static final String table_main = "FantelMain";
@@ -27,12 +27,13 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
     private static final String tco_user_id = "UserID";
     private static final String tco_date_tagged = "DateTagged";
     private static final String tco_date_untagged = "DateUntagged";
+    private static final String tco_distance = "Distance";
 
     private static final String table_user = "User";
     private static final String user_id = "UserID";
     private static final String date_created = "DateCreated";
 
-    private static final String[] COLUMNS = { tco_id, tco_global_id, tco_lat, tco_long, tco_user_id, tco_date_tagged, tco_date_untagged };
+    private static final String[] COLUMNS = { tco_id, tco_global_id, tco_lat, tco_long, tco_user_id, tco_date_tagged, tco_date_untagged, tco_distance };
     private static final String[] USER_COLUMNS = { user_id, date_created };
     public String UserID = "";
 
@@ -46,7 +47,8 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_MAIN_TABLE = "CREATE TABLE 'FantelMain' ('OptionsID' INTEGER, 'GlobalID' TEXT, 'Latitude' TEXT, 'Longitude' TEXT, 'UserID' TEXT, 'DateTagged' TEXT, 'DateUntagged' TEXT, PRIMARY KEY(OptionsID));";
+        String CREATE_MAIN_TABLE = "CREATE TABLE 'FantelMain' ('OptionsID' INTEGER, 'GlobalID' TEXT, 'Latitude' TEXT, " +
+                "'Longitude' TEXT, 'UserID' TEXT, 'DateTagged' TEXT, 'DateUntagged' TEXT, 'Distance' REAL, PRIMARY KEY(OptionsID));";
         String CREATE_USER_TABLE = "CREATE TABLE 'User' ('UserID' String, 'DateCreated' TEXT);";
 
         db.execSQL(CREATE_MAIN_TABLE);
@@ -60,7 +62,7 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS FantelMain");
-        // the user db wont get upgraded, it's just userid and created date.
+        // the user db wont get upgraded, it's just userid and created date... forever
         this.onCreate(db);
     }
 
@@ -85,6 +87,7 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         values.put(tco_long, tc.getLongitude());
         values.put(tco_user_id, tc.getUserID());
         values.put(tco_date_tagged, tc.getDateTagged());
+        values.put(tco_distance, tc.getDistance());
 
         // insert tc option
         int nOptionID = (int) db.insert(table_main, null, values);
@@ -113,8 +116,9 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         List tcos = new LinkedList();
         String query = "SELECT  * FROM " + table_main;
         String where = bDraw ? " WHERE DateUntagged ='None' OR DateUntagged IS NULL" : "";
+        String orderBy = " ORDER BY Distance ASC;";
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query + where, null);
+        Cursor cursor = db.rawQuery(query + where + orderBy, null);
         TCODb tco = null;
 
         if (cursor.moveToFirst()) {
@@ -127,6 +131,7 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
                 tco.setUserID(cursor.getString(4));
                 tco.setDateTagged(cursor.getString(5));
                 tco.setDateUntagged(cursor.getString(6));
+                tco.setDistance(cursor.getDouble(7));
 
                 tcos.add(tco);
             } while (cursor.moveToNext());
@@ -169,6 +174,7 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
             tco.setUserID(cursor.getString(4));
             tco.setDateTagged(cursor.getString(5));
             tco.setDateUntagged(cursor.getString(6));
+            tco.setDistance(cursor.getDouble(7));
         } catch(Exception ex) {
             tco = null;
             Log.e("FANTEL", ex.toString());

@@ -1,4 +1,3 @@
-DELIMITER $$
 CREATE DEFINER=`fantel`@`%` PROCEDURE `spDistance`(
 	IN drawing INTEGER,
 	IN onelat DECIMAL(20, 13),
@@ -18,9 +17,7 @@ BEGIN
                 + COS(onelat * (PI / 180)) 
                 * COS(ABS(FantelOptions.Latitude) * (PI / 180)) 
                 * POWER(SIN((onelong - FantelOptions.Longitude) * (PI / 180) / 2), 2)
-                )) as distance
+                )) as Distance
 	FROM FantelOptions
-    WHERE (DateUntagged IS NULL) OR (drawing = 0)
-    HAVING distance < 50; 
-END$$
-DELIMITER ;
+    WHERE (DateUntagged IS NULL) OR (drawing = 0); -- HAVING distance < 50; 
+END

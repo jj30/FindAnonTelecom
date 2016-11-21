@@ -77,12 +77,12 @@ public class TCODb {
         this.optionsID = optionsID;
     }
 
-    /* public Double getDistance() {
-        return distance;
+    public Double getDistance() { return distance;
     }
+
     public void setDistance(Double distance) {
         this.distance = distance;
-    }*/
+    }
 
     public Double getLongitude() {
         return longitude;

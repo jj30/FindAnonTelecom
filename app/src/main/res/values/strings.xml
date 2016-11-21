@@ -7,6 +7,7 @@
     <string name="interstitial_ad_sample">Interstitial Ad Sample</string>
     <string name="start_level">Level 1</string>
     <string name="tag_location">Tag Location</string>
+    <string name="find_nearest">Nearest Option</string>
     <string name="tag_street_view">Tag St. View</string>
     <string name="show_street_view">St. View</string>
     <string name="tag_no_location">Untag</string>

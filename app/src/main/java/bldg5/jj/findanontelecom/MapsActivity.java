@@ -63,10 +63,12 @@ public class MapsActivity extends FragmentActivity
     private String android_id;
     private AdView mAdView;
     private Button btnLocation;
+    private Button btnNearest;
     private boolean bPinsDrawn = false;
     private FrameLayout pinSelected;
     private Location pinsDrawn;
-    private ArrayList<LatLng> allPinsByLatLong = new ArrayList<LatLng>();
+    private List<TCODb> allDBOptions;
+    private ArrayList<LatLng> allDBOptionsLatLng = new ArrayList<>();
     public RestClient getCloudOptions = new RestClient();
 
     @Override
@@ -74,6 +76,7 @@ public class MapsActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         btnLocation = (Button) findViewById(R.id.btnLocation);
+        btnNearest = (Button) findViewById(R.id.btnNearest);
         pinSelected = (FrameLayout) findViewById(R.id.pinSelected);
 
         // Show the ad
@@ -88,7 +91,7 @@ public class MapsActivity extends FragmentActivity
         mAdView.loadAd(adRequest);
 
         // add the listener to the button -- when clicked, get location of pin
-        addListener();
+        addListeners();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -192,11 +195,12 @@ public class MapsActivity extends FragmentActivity
                 // if marker source is clicked
                 // switch buttons (toggle visibility)
                 final boolean bLocationVisible = btnLocation.getVisibility() == View.VISIBLE;
-                // boolean bNoLocationVisible = btnNoLocation.getVisibility() == View.VISIBLE;
+                final boolean bNearestVisible = btnNearest.getVisibility() == View.VISIBLE;
                 final boolean bPinSelectedShowing = pinSelected.getVisibility() == View.VISIBLE;
 
                 pinSelected.setVisibility(bPinSelectedShowing ? View.GONE : View.VISIBLE);
                 btnLocation.setVisibility(bLocationVisible ? View.GONE : View.VISIBLE);
+                btnNearest.setVisibility(bNearestVisible ? View.GONE : View.VISIBLE);
 
                 // newly visible button has to handle event with ID from marker
                 final int nID = Integer.valueOf(strTitle.replace("Option ", ""));
@@ -214,6 +218,7 @@ public class MapsActivity extends FragmentActivity
                         // toggle visibility again
                         pinSelected.setVisibility(View.GONE);
                         btnLocation.setVisibility(View.VISIBLE);
+                        btnNearest.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -223,6 +228,7 @@ public class MapsActivity extends FragmentActivity
                         // toggle visibility again
                         pinSelected.setVisibility(View.GONE);
                         btnLocation.setVisibility(View.VISIBLE);
+                        btnNearest.setVisibility(View.VISIBLE);
                     }
                 });
             }
@@ -322,23 +328,23 @@ public class MapsActivity extends FragmentActivity
         dblLong = location.getLongitude();
 
         final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-        List<TCODb> allOptions = sqLiteHelper.getAllTCOs(true);
+        allDBOptions = sqLiteHelper.getAllTCOs(true);
 
-        if (allOptions != null) {
-            for (final TCODb tcoDb : allOptions) {
+        if (allDBOptions != null) {
+            for (final TCODb tcoDb : allDBOptions) {
                 markLocation(tcoDb);
                 mMap.setOnMarkerClickListener(mMarkerListener);
             }
         }
     }
 
-    public void addListener()
+    public void addListeners()
     {
-        Button buttonTag = (Button) findViewById(R.id.btnLocation);
-        // Button buttonTagStreetView = (Button) findViewById(R.id.btnStreetView);
+        Button btnTag = (Button) findViewById(R.id.btnLocation);
+        Button btnNearest = (Button) findViewById(R.id.btnNearest);
         final Context mContext = this;
 
-        buttonTag.setOnClickListener(new View.OnClickListener() {
+        btnTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ImageView imgV = (ImageView) findViewById(R.id.imageMarker);
@@ -408,11 +414,33 @@ public class MapsActivity extends FragmentActivity
             }
         });
 
-        /* buttonTagStreetView.setOnClickListener(new View.OnClickListener() {
+        btnNearest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (allDBOptions == null && allDBOptions.size() > 0) {
+                    // there are no options, therefore no 'nearest' one
+                    Context context = getApplicationContext();
+                    CharSequence text = "There are no nearby options.";
+                    int duration = Toast.LENGTH_LONG;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                } else {
+                    TCODb nearest = allDBOptions.get(0);
+                    Double dblNearestLat = nearest.getLatitude();
+                    Double dblNearestLong = nearest.getLongitude();
+
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dblNearestLat, dblNearestLong), 13));
+
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(dblNearestLat, dblNearestLong))
+                            .zoom(17)
+                            .build();
+
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                }
             }
-        });*/
+        });
     }
 
     private void markLocation(TCODb tcoDb) {
@@ -423,14 +451,14 @@ public class MapsActivity extends FragmentActivity
 
         // Check if it already has been added -- we are only checking by lat long.
         // This means that the list of markers won't have the "Option Title"
-        if (allPinsByLatLong.contains(latLng)) {
+        if (allDBOptionsLatLng.contains(latLng)) {
             Log.i("FANTEL", "Attempt to dupe marker: latitude: " + String.valueOf(tcoDb.getLatitude()) +
                     " longitude: " + String.valueOf(tcoDb.getLongitude()) +
                     " OptionID: " + String.valueOf(tcoDb.getOptionsID()));
         } else {
             mMap.addMarker(markerOptions);
             mMap.setOnMarkerClickListener(mMarkerListener);
-            allPinsByLatLong.add(latLng);
+            allDBOptionsLatLng.add(latLng);
         }
     }
 }
