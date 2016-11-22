@@ -15,7 +15,7 @@ class GetOptions(object):
         return all_options
 
     @cherrypy.expose
-    def tag(self, latitude, longitude, userid, datetagged, dateuntagged):
+    def tag(self, latitude, longitude, userid, datetagged, dateuntagged, bearing, tilt, zoom):
         print("RECEIVED::latitude:::" + str(latitude) + "::longitude:" + str(longitude))
         bFound = False
         # two cases. User tagged a new option or 2) user untagged an option.
@@ -23,9 +23,8 @@ class GetOptions(object):
 
         for item in all_options:
             # the order the columns appear in the database
-            item_id, item_global, item_latitude, item_longitude, item_userid, item_date_tagged, item_date_untagged, item_dist = item
-
-            print("testing:" + ":latitude:" + str(item_latitude) + ":longitude:" + str(item_longitude))
+            item_id, item_global, item_latitude, item_longitude, item_userid, item_date_tagged, \
+                item_date_untagged, item_dist, item_bearing, item_tilt, item_zoom = item
 
             if Decimal(latitude) == item_latitude and \
                     Decimal(longitude) == item_longitude:
@@ -42,7 +41,7 @@ class GetOptions(object):
                 break
 
         if (not bFound):
-            self.SaveToDB(latitude, longitude, userid, datetagged, dateuntagged)
+            self.SaveToDB(latitude, longitude, userid, datetagged, dateuntagged, bearing, tilt, zoom)
 
     def untag(self, global_id):
         try:
@@ -56,16 +55,17 @@ class GetOptions(object):
         except Exception as ex:
             print(ex)
 
-    def SaveToDB(self, latitude, longitude, userid, datetagged, dateuntagged):
+    def SaveToDB(self, latitude, longitude, userid, datetagged, dateuntagged, bearing, tilt, zoom):
         try:
             db = pymysql.connect(self.db_location, self.db_user_name, self.db_pwd, self.db_database_name)
             cursor = db.cursor()
-            exec_string = "call spNewOption(%s, %s, '%s', '%s', '%s')" % (
-                latitude, longitude, userid, datetagged, dateuntagged)
+            exec_string = "call spNewOption(%s, %s, '%s', '%s', '%s', %s, %s, %s)" % (
+                latitude, longitude, userid, datetagged, dateuntagged, bearing, tilt, zoom)
             cursor.execute(exec_string)
             db.commit()
             db.close()
         except Exception as ex:
+            # print("ATTEMPTED EXEC: " + exec_string)
             print(ex)
 
     def getAllFromDB(self, drawing, latitude, longitude):
@@ -85,7 +85,7 @@ class GetOptions(object):
 
         for item in data:
             # the order the columns appear in the database
-            OptionsID, GlobalID, Latitude, Longitude, UserID, DateTagged, DateUntagged, distance = item
+            OptionsID, GlobalID, Latitude, Longitude, UserID, DateTagged, DateUntagged, Bearing, Tilt, Zoom, Distance = item
 
             DateTagged = str(DateTagged)
             DateUntagged = str(DateUntagged)
@@ -97,7 +97,10 @@ class GetOptions(object):
                     "UserID" : UserID ,
                     "DateTagged" : DateTagged,
                     "DateUntagged" : DateUntagged,
-                    "distance" : distance  }
+                    "Distance" : Distance,
+                    "Bearing" : Bearing,
+                    "Tilt" : Tilt,
+                    "Zoom" : Zoom  }
 
             final_json.append(dct)
 
