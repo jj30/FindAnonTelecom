@@ -55,11 +55,15 @@ public class RestClient {
     }
 
     public void SendToCloud(TCODb tcoDb) {
+        // String strLocalOptionID = String.valueOf(tcoDb.getGlobalID());
         String strLatitude = String.valueOf(tcoDb.getLatitude());
         String strLongitude = String.valueOf(tcoDb.getLongitude());
         String strUserID = tcoDb.getUserID();
         String strDateTagged = tcoDb.getDateTagged();
         String strDateUntagged = tcoDb.getDateUntagged();
+        String strBearing = String.valueOf(tcoDb.getBearing());
+        String strTilt = String.valueOf(tcoDb.getTilt());
+        String strZoom = String.valueOf(tcoDb.getZoom());
 
         if (strDateUntagged == null) {
             strDateUntagged = "";
@@ -71,7 +75,7 @@ public class RestClient {
                 .build();
 
         ApiEndpointInterface service = retrofit.create(ApiEndpointInterface.class);
-        Call<String> call = service.saveToCloud(strLatitude, strLongitude, strUserID, strDateTagged, strDateUntagged);
+        Call<String> call = service.saveToCloud(strLatitude, strLongitude, strUserID, strDateTagged, strDateUntagged, strBearing, strTilt, strZoom);
 
         call.enqueue(new Callback<String>() {
             @Override
@@ -104,6 +108,11 @@ public class RestClient {
         for (TCODb tc : localDBOptions) {
             // kluge alert: we should send only deltas to the cloud.
             SendToCloud(tc);
+
+            // if it was never set, it never came from the cloud
+            if (tc.getGlobalID() == null) {
+                sqLiteHelper.obliterateTCO(tc);
+            }
         }
     }
 }

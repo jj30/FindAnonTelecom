@@ -21,6 +21,9 @@ public interface ApiEndpointInterface {
         @Query("longitude") String longitude,
         @Query("userid") String userID,
         @Query("datetagged") String dateTagged,
-        @Query("dateuntagged") String dateUntagged
+        @Query("dateuntagged") String dateUntagged,
+        @Query("bearing") String bearing,
+        @Query("tilt") String tilt,
+        @Query("zoom") String zoom
     );
 }

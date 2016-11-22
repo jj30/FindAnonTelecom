@@ -77,69 +77,18 @@ public class MapsActivity extends FragmentActivity
         pinSelected = (FrameLayout) findViewById(R.id.pinSelected);
 
         // Show the ad
-        AdRequest adRequest = new AdRequest.Builder()
-                // .addTestDevice(android_id)
-                .build();
-
-        // android_id = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        AdRequest adRequest = new AdRequest.Builder().build();
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-1882113672777118~7688775386");
         // I/Ads: Use AdRequest.Builder.addTestDevice("CA9D245DFDA0DE28135B9132BCF6089F") to get test ads on this device.
         mAdView = (AdView) findViewById(R.id.adView);
         mAdView.loadAd(adRequest);
 
-        // add the listener to the button -- when clicked, get location of pin
+        // add the listener to the buttons -- when clicked, get location of pin, or find nearest pin
         addListeners();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION);
-
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-                showExplanation("Permission Needed", "Rationale", android.Manifest.permission.ACCESS_FINE_LOCATION, MY_PERMISSIONS_REQUEST_LOCATION);
-            } else {
-                requestPermission(android.Manifest.permission.ACCESS_FINE_LOCATION, MY_PERMISSIONS_REQUEST_LOCATION);
-            }
-        }
-
-        // Get last location
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        mprovider = locationManager.getBestProvider(criteria, false);
-
-        if (mprovider == null) {
-            // then the user hasn't yet given permissions
-            return;
-        }
-
-        Location location = locationManager.getLastKnownLocation(mprovider);
-        // save this location as the "init" location
-        pinsDrawn = location;
-
-        // If we have one and the map is ready, zoom into it.
-        if (location != null && mMap != null) {
-            dblLat = location.getLatitude();
-            dblLong = location.getLongitude();
-
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dblLat, dblLong), 13));
-
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(dblLat, dblLong))      // Sets the center of the map to location user
-                    .zoom(17)                   // Sets the zoom
-                    // .bearing(90)                // Sets the orientation of the camera to east
-                    // .tilt(40)                   // Sets the tilt of the camera to 30 degrees
-                    .build();                   // Creates a CameraPosition from the builder
-
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        }
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                MINIMUM_TIME_BETWEEN_UPDATES,
-                MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
-                new MyLocationListener()
-        );
     }
 
     @Override
@@ -148,39 +97,165 @@ public class MapsActivity extends FragmentActivity
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_LOCATION);
             return;
         }
-        Criteria criteria = new Criteria();
-        mprovider = locationManager.getBestProvider(criteria, false);
-        Location location = locationManager.getLastKnownLocation(mprovider);
-        pinsDrawn = location;
+
+        pinsDrawn = getLastLocation();
     }
 
-    private void RedrawPins(Location location) {
-        // if new location is within a mile of the init'ed location, don't redraw
-        float distance = pinsDrawn.distanceTo(location);
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
 
-        // 1600 meters is roughly one mile
-        if (distance > 1600 || !bPinsDrawn) {
-            // let's synch the cloud and the local db's now
-            // options in db? send to cloud. opts in cloud? pull down.
-            // at present time, the app only shows options FOR THE CURRENT LOCATION & FROM THE LOCAL DB
+        // Initializing the map means 1) get last location 2) camera to it
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_LOCATION);
+        } else {
+            InitMap(googleMap);
+        }
+    }
 
+    private Location getLastLocation() {
+        // Get last location
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                MINIMUM_TIME_BETWEEN_UPDATES,
+                MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
+                new MyLocationListener()
+        );
+
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(true);
+        criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
+
+        mprovider = locationManager.getBestProvider(criteria, false);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return null;
+        }
+
+        Location location = locationManager.getLastKnownLocation(mprovider);
+        return location;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == MY_PERMISSIONS_REQUEST_LOCATION)
+        {
+            // Check Permissions Granted or not
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                InitMap(mMap);
+            } else {
+                Toast.makeText(this, "Access location permission was denied.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void InitMap(GoogleMap googleMap) {
+        Location location = getLastLocation();
+
+        mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
+
+        // If we have one and the map is ready, zoom into it.
+        if (location != null && mMap != null) {
+            dblLat = location.getLatitude();
+            dblLong = location.getLongitude();
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dblLat, dblLong), 13));
+
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(dblLat, dblLong))      // Sets the center of the map to location user
+                    .zoom(17)                   // Sets the zoom
+                    .build();                   // Creates a CameraPosition from the builder
+
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+            // get the options from the cloud
+            getCloudOptions.sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+            getCloudOptions.PullDown(dblLat, dblLong);
+
+            // draw the markers from the cloud, now in the local DB (asynchronous)
             DrawMarkers50Miles(location);
-            pinsDrawn = location;
-            bPinsDrawn = true;
         }
     }
 
     private class MyLocationListener implements LocationListener {
         public void onLocationChanged(Location location) {
-            RedrawPins(location);
+            // if new location is within a mile of the init'ed location, don't redraw
+            float distance = pinsDrawn.distanceTo(location);
+
+            // 1600 meters is roughly one mile
+            if (distance > 1600 || !bPinsDrawn) {
+                // let's synch the cloud and the local db's now
+                // options in db? send to cloud. opts in cloud? pull down.
+                // at present time, the app only shows options FOR THE CURRENT LOCATION & FROM THE LOCAL DB
+
+                DrawMarkers50Miles(location);
+                pinsDrawn = location;
+                bPinsDrawn = true;
+            }
         }
 
-        public void onStatusChanged(String s, int i, Bundle b) { }
-        public void onProviderDisabled(String s) { }
-        public void onProviderEnabled(String s) { }
+        public void onStatusChanged(String s, int i, Bundle b) {
+        }
+
+        public void onProviderDisabled(String s) {
+        }
+
+        public void onProviderEnabled(String s) {
+        }
     }
+
+    private void DrawMarkers50Miles(Location location) {
+        dblLat = location.getLatitude();
+        dblLong = location.getLongitude();
+
+        final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+        allDBOptions = sqLiteHelper.getAllTCOs(true);
+
+        if (allDBOptions != null) {
+            if (allDBOptions.size() > 0) {
+                for (final TCODb tcoDb : allDBOptions) {
+                    markLocation(tcoDb);
+                    mMap.setOnMarkerClickListener(mMarkerListener);
+                }
+
+                bPinsDrawn = true;
+                pinsDrawn = location;
+            }
+        }
+    }
+
+    private void markLocation(TCODb tcoDb) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        LatLng latLng = new LatLng(tcoDb.getLatitude(), tcoDb.getLongitude());
+        markerOptions.title("Option " + String.valueOf(tcoDb.getOptionsID()));
+        markerOptions.position(latLng);
+
+        // Check if it already has been added -- we are only checking by lat long.
+        // This means that the list of markers won't have the "Option Title"
+        if (allDBOptionsLatLng.contains(latLng)) {
+            Log.i("FANTEL", "Attempt to dupe marker: latitude: " + String.valueOf(tcoDb.getLatitude()) +
+                    " longitude: " + String.valueOf(tcoDb.getLongitude()) +
+                    " OptionID: " + String.valueOf(tcoDb.getOptionsID()));
+        } else {
+            mMap.addMarker(markerOptions);
+            mMap.setOnMarkerClickListener(mMarkerListener);
+            allDBOptionsLatLng.add(latLng);
+        }
+    }
+
 
     private GoogleMap.OnMarkerClickListener mMarkerListener = new GoogleMap.OnMarkerClickListener() {
         @Override
@@ -203,6 +278,7 @@ public class MapsActivity extends FragmentActivity
                 final int nID = Integer.valueOf(strTitle.replace("Option ", ""));
                 Button buttonUnTag = (Button) findViewById(R.id.btnNoLocation);
                 Button buttonCancel = (Button) findViewById(R.id.btnCancel);
+                Button btnGetStreetView = (Button) findViewById(R.id.btnGetStreetView);
 
                 buttonUnTag.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -216,6 +292,27 @@ public class MapsActivity extends FragmentActivity
                         pinSelected.setVisibility(View.GONE);
                         btnLocation.setVisibility(View.VISIBLE);
                         btnNearest.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                btnGetStreetView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        TCODb tcoDb = sqLiteHelper.readTCOByOptionID(nID);
+
+                        Bundle bPassVals = new Bundle();
+
+                        bPassVals.putString("mode", "show");
+                        bPassVals.putDouble("latitude", tcoDb.getLatitude());
+                        bPassVals.putDouble("longitude", tcoDb.getLongitude());
+                        bPassVals.putFloat("bearing", tcoDb.getBearing());
+                        bPassVals.putFloat("tilt", tcoDb.getTilt());
+                        bPassVals.putFloat("zoom", tcoDb.getZoom());
+
+                        Intent showStView = new Intent(MapsActivity.this, StreetView.class);
+                        showStView.putExtras(bPassVals);
+
+                        MapsActivity.this.startActivity(showStView);
                     }
                 });
 
@@ -233,113 +330,10 @@ public class MapsActivity extends FragmentActivity
         }
     };
 
-    // http://stackoverflow.com/questions/35484767/activitycompat-requestpermissions-not-showing-dialog-box
-    private void showExplanation(String title,
-                                 String message,
-                                 final String permission,
-                                 final int permissionRequestCode) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        requestPermission(permission, permissionRequestCode);
-                    }
-                });
-        builder.create().show();
-    }
-
-    private void requestPermission(String permissionName, int permissionRequestCode) {
-        ActivityCompat.requestPermissions(this,
-                new String[]{permissionName}, permissionRequestCode);
-    }
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        // Get last location
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);
-        criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
-
-        // , GoogleMap.OnMyLocationButtonClickListener
-        // If we don't have permissions, exit ('return')
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{ android.Manifest.permission.ACCESS_FINE_LOCATION },
-                    MY_PERMISSIONS_REQUEST_LOCATION);
-            return;
-        }
-
-        mprovider = locationManager.getBestProvider(criteria, false);
-        Location location = locationManager.getLastKnownLocation(mprovider);
-
-        // LatLng lastLoc = new LatLng(dblLat, dblLong);
-
-        mMap = googleMap;
-        // mMap.setPadding(50, 5, 0, 0); // left top right bottom
-        // mMap.addMarker(new MarkerOptions().position(lastLoc).title("Last Location"));
-        // mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLoc));
-        mMap.setMyLocationEnabled(true);
-
-        // If we have one and the map is ready, zoom into it.
-        if (location != null && mMap != null) {
-            dblLat = location.getLatitude();
-            dblLong = location.getLongitude();
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dblLat, dblLong), 13));
-
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(dblLat, dblLong))      // Sets the center of the map to location user
-                    .zoom(17)                   // Sets the zoom
-                    // .bearing(90)                // Sets the orientation of the camera to east
-                    // .tilt(40)                   // Sets the tilt of the camera to 30 degrees
-                    .build();                   // Creates a CameraPosition from the builder
-
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-            // get the options from the cloud
-            getCloudOptions.sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-            getCloudOptions.PullDown(dblLat, dblLong);
-
-            // draw the markers from the cloud, now in the local DB
-            DrawMarkers50Miles(location);
-        }
-    }
-
-    private void DrawMarkers50Miles(Location location) {
-        dblLat = location.getLatitude();
-        dblLong = location.getLongitude();
-
-        final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-        allDBOptions = sqLiteHelper.getAllTCOs(true);
-
-        if (allDBOptions != null) {
-            for (final TCODb tcoDb : allDBOptions) {
-                markLocation(tcoDb);
-                mMap.setOnMarkerClickListener(mMarkerListener);
-            }
-        }
-    }
-
     public void addListeners()
     {
         Button btnTag = (Button) findViewById(R.id.btnLocation);
         Button btnNearest = (Button) findViewById(R.id.btnNearest);
-        Button btnGetStreetView = (Button) findViewById(R.id.btnGetStreetView);
         final Context mContext = this;
 
         btnTag.setOnClickListener(new View.OnClickListener() {
@@ -379,37 +373,18 @@ public class MapsActivity extends FragmentActivity
                     pbutton.setBackgroundColor(Color.GRAY);
                     pbutton.setTextColor(Color.WHITE);
                 } else {
-                    // Projection projection = mMap.getProjection();
-                    // LatLng pinLoc = projection.fromScreenLocation(new Point(location[0], location[1]));
-                    // Log.i("Fantel", "location x : " + String.valueOf(location[0]) + " location y: " + String.valueOf(location[1]));
-                    FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-
-                    // get today's date
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date date = new Date();
-
-                    TCODb tcoDb = new TCODb();
-                    tcoDb.setLatitude(pinLoc.latitude);
-                    tcoDb.setLongitude(pinLoc.longitude);
-                    tcoDb.setUserID(sqLiteHelper.UserID);
-                    tcoDb.setDateTagged(dateFormat.format(date));
-
                     try {
-                        sqLiteHelper.createTCODb(tcoDb);
-                        markLocation(tcoDb);
-
                         // now go tag the street view
-                        Intent tagStreetView = new Intent(MapsActivity.this, StreetView.class);
+                        Intent setStreetView = new Intent(MapsActivity.this, StreetView.class);
 
                         Bundle bPassVals = new Bundle();
                         bPassVals.putString("mode", "tag");
-                        bPassVals.putDouble("latitude", pinsDrawn.getLatitude());
-                        bPassVals.putDouble("longitude", pinsDrawn.getLongitude());
+                        bPassVals.putDouble("latitude", pinLoc.latitude);
+                        bPassVals.putDouble("longitude", pinLoc.longitude);
 
-                        tagStreetView.putExtras(bPassVals);
+                        setStreetView.putExtras(bPassVals);
 
-                        MapsActivity.this.startActivity(tagStreetView);
-
+                        MapsActivity.this.startActivityForResult(setStreetView, 1);
                     } catch (Exception ex) {
                         Log.i("Fantel", ex.getMessage());
                     }
@@ -445,42 +420,45 @@ public class MapsActivity extends FragmentActivity
             }
         });
 
-        btnGetStreetView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bPassVals = new Bundle();
-
-                bPassVals.putString("mode", "show");
-                bPassVals.putDouble("latitude", pinsDrawn.getLatitude());
-                bPassVals.putDouble("longitude", pinsDrawn.getLongitude());
-                bPassVals.putFloat("bearing", 66.80949f);
-                bPassVals.putFloat("tilt", -0.7351023f);
-                bPassVals.putFloat("zoom", 2.0f);
-
-                Intent showStView = new Intent(MapsActivity.this, StreetView.class);
-                showStView.putExtras(bPassVals);
-
-                MapsActivity.this.startActivity(showStView);
-            }
-        });
     }
 
-    private void markLocation(TCODb tcoDb) {
-        MarkerOptions markerOptions = new MarkerOptions();
-        LatLng latLng = new LatLng(tcoDb.getLatitude(), tcoDb.getLongitude());
-        markerOptions.title("Option " + String.valueOf(tcoDb.getOptionsID()));
-        markerOptions.position(latLng);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                String strMode = "";
+                Double dblLat = 0.0d;
+                Double dblLong = 0.0d;
+                Float bearing = 0.0f;
+                Float tilt = 0.0f;
+                Float zoom = 0.0f;
 
-        // Check if it already has been added -- we are only checking by lat long.
-        // This means that the list of markers won't have the "Option Title"
-        if (allDBOptionsLatLng.contains(latLng)) {
-            Log.i("FANTEL", "Attempt to dupe marker: latitude: " + String.valueOf(tcoDb.getLatitude()) +
-                    " longitude: " + String.valueOf(tcoDb.getLongitude()) +
-                    " OptionID: " + String.valueOf(tcoDb.getOptionsID()));
-        } else {
-            mMap.addMarker(markerOptions);
-            mMap.setOnMarkerClickListener(mMarkerListener);
-            allDBOptionsLatLng.add(latLng);
+                strMode = data.getStringExtra("mode");
+                dblLat = data.getDoubleExtra("latitude", dblLat);
+                dblLong = data.getDoubleExtra("longitude", dblLong);
+                bearing = data.getFloatExtra("bearing", bearing);
+                tilt = data.getFloatExtra("tilt", tilt);
+                zoom = data.getFloatExtra("zoom", zoom);
+
+                FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+
+                // get today's date
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date();
+
+                TCODb tcoDb = new TCODb();
+                tcoDb.setLatitude(dblLat);
+                tcoDb.setLongitude(dblLong);
+                tcoDb.setBearing(bearing);
+                tcoDb.setTilt(tilt);
+                tcoDb.setZoom(zoom);
+                tcoDb.setUserID(sqLiteHelper.UserID);
+                tcoDb.setDateTagged(dateFormat.format(date));
+                sqLiteHelper.createTCODb(tcoDb);
+
+                // now that it's in the DB, put it on the map
+                markLocation(tcoDb);
+            }
         }
     }
 }

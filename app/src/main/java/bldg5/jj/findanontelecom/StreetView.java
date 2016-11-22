@@ -100,9 +100,20 @@ public class StreetView extends AppCompatActivity
                 Float tilt = currCamera.tilt;
                 Float zoom = currCamera.zoom;
 
-                Log.i("FANTEL", "bearing: " + String.valueOf(bearing));
+                /* Log.i("FANTEL", "bearing: " + String.valueOf(bearing));
                 Log.i("FANTEL", "tilt: " + String.valueOf(tilt));
-                Log.i("FANTEL", "zoom: " + String.valueOf(zoom));
+                Log.i("FANTEL", "zoom: " + String.valueOf(zoom));*/
+
+                Intent intent = new Intent();
+                intent.putExtra("mode", strMode);
+                intent.putExtra("latitude", dblLatitude);
+                intent.putExtra("longitude", dblLongitude);
+                intent.putExtra("bearing", bearing);
+                intent.putExtra("tilt", tilt);
+                intent.putExtra("zoom", zoom);
+
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }

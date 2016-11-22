@@ -28,12 +28,16 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
     private static final String tco_date_tagged = "DateTagged";
     private static final String tco_date_untagged = "DateUntagged";
     private static final String tco_distance = "Distance";
+    private static final String tco_bearing = "Bearing";
+    private static final String tco_tilt = "Tilt";
+    private static final String tco_zoom = "Zoom";
 
     private static final String table_user = "User";
     private static final String user_id = "UserID";
     private static final String date_created = "DateCreated";
 
-    private static final String[] COLUMNS = { tco_id, tco_global_id, tco_lat, tco_long, tco_user_id, tco_date_tagged, tco_date_untagged, tco_distance };
+    private static final String[] COLUMNS = { tco_id, tco_global_id, tco_lat, tco_long, tco_user_id, tco_date_tagged,
+            tco_date_untagged, tco_distance, tco_bearing, tco_tilt, tco_zoom };
     private static final String[] USER_COLUMNS = { user_id, date_created };
     public String UserID = "";
 
@@ -89,6 +93,9 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         values.put(tco_user_id, tc.getUserID());
         values.put(tco_date_tagged, tc.getDateTagged());
         values.put(tco_distance, tc.getDistance());
+        values.put(tco_bearing, tc.getBearing());
+        values.put(tco_tilt, tc.getTilt());
+        values.put(tco_zoom, tc.getZoom());
 
         // insert tc option
         int nOptionID = (int) db.insert(table_main, null, values);
@@ -133,10 +140,14 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
                 tco.setDateTagged(cursor.getString(5));
                 tco.setDateUntagged(cursor.getString(6));
                 tco.setDistance(cursor.getDouble(7));
+                tco.setBearing(cursor.getFloat(8));
+                tco.setTilt(cursor.getFloat(9));
+                tco.setZoom(cursor.getFloat(10));
 
                 tcos.add(tco);
             } while (cursor.moveToNext());
         }
+
         return tcos;
     }
 
@@ -155,15 +166,45 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
 
     public void obliterateTCO(TCODb tcoDb) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(table_main, tco_global_id + " = ?", new String[] { String.valueOf(tcoDb.getGlobalID()) });
+        db.delete(table_main, tco_id + " = ?", new String[] { String.valueOf(tcoDb.getOptionsID()) });
         db.close();
     }
 
     public TCODb readTCO(String strGlobalId) {
         //  String strStatement = "SELECT * FROM " + table_main + " WHERE GlobalID = '" + strGlobalId + "';";
+        // Cursor cursor = db.rawQuery(strStatement, null);
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(table_main, COLUMNS, " GlobalID = ?", new String[] { String.valueOf(strGlobalId) }, null, null, null, null);
-        // Cursor cursor = db.rawQuery(strStatement, null);
+        TCODb tco = null;
+
+        try {
+            if (cursor.moveToFirst()) {
+                tco = new TCODb();
+                tco.setOptionsID(cursor.getInt(0));
+                tco.setGlobalID(cursor.getString(1));
+                tco.setLatitude(cursor.getDouble(2));
+                tco.setLongitude(cursor.getDouble(3));
+                tco.setUserID(cursor.getString(4));
+                tco.setDateTagged(cursor.getString(5));
+                tco.setDateUntagged(cursor.getString(6));
+                tco.setDistance(cursor.getDouble(7));
+                tco.setBearing(cursor.getFloat(8));
+                tco.setTilt(cursor.getFloat(9));
+                tco.setZoom(cursor.getFloat(10));
+            }
+        } catch(Exception ex) {
+            tco = null;
+            Log.e("FANTEL", ex.toString());
+        }
+
+        return tco;
+    }
+
+    public TCODb readTCOByOptionID(Integer nOptionID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String strOptionID = String.valueOf(nOptionID);
+        Cursor cursor = db.query(table_main, COLUMNS, " OptionsID = ?", new String[] { strOptionID }, null, null, null, null);
         TCODb tco = new TCODb();
 
         try {
@@ -176,6 +217,9 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
             tco.setDateTagged(cursor.getString(5));
             tco.setDateUntagged(cursor.getString(6));
             tco.setDistance(cursor.getDouble(7));
+            tco.setBearing(cursor.getFloat(8));
+            tco.setTilt(cursor.getFloat(9));
+            tco.setZoom(cursor.getFloat(10));
         } catch(Exception ex) {
             tco = null;
             Log.e("FANTEL", ex.toString());
