@@ -38,7 +38,7 @@ class GetOptions(object):
                     print("going to untag::: " + dateuntagged + ":::")
                     self.untag(item_global)
                     return
-                break
+                breakdelete from FantelOptions where OptionsID = 165
 
         if (not bFound):
             self.SaveToDB(latitude, longitude, userid, datetagged, dateuntagged, bearing, tilt, zoom)
@@ -57,10 +57,22 @@ class GetOptions(object):
 
     def SaveToDB(self, latitude, longitude, userid, datetagged, dateuntagged, bearing, tilt, zoom):
         try:
+            latitude = 'null' if latitude == '' else latitude
+            longitude = 'null' if longitude == '' else longitude
+            userid = 'null' if userid == '' else userid
+            datetagged = 'null' if datetagged == '' else datetagged
+            dateuntagged = 'null' if dateuntagged == '' else dateuntagged
+            bearing = 'null' if bearing == '' else bearing
+            tilt = 'null' if tilt == '' else tilt
+            zoom = 'null' if zoom == '' else zoom
+
             db = pymysql.connect(self.db_location, self.db_user_name, self.db_pwd, self.db_database_name)
             cursor = db.cursor()
+
             exec_string = "call spNewOption(%s, %s, '%s', '%s', '%s', %s, %s, %s)" % (
                 latitude, longitude, userid, datetagged, dateuntagged, bearing, tilt, zoom)
+            exec_string = exec_string.replace("'null'", "null")
+
             cursor.execute(exec_string)
             db.commit()
             db.close()
@@ -80,29 +92,28 @@ class GetOptions(object):
     def getAllJSON(self, latitude, longitude):
         # True because we're only intersted in the drawables.
         data = self.getAllFromDB(True, latitude, longitude)
-
         final_json = []
 
         for item in data:
+            dictionary = {}
             # the order the columns appear in the database
             OptionsID, GlobalID, Latitude, Longitude, UserID, DateTagged, DateUntagged, Bearing, Tilt, Zoom, Distance = item
+            headers = "OptionsID", "GlobalID", "Latitude", "Longitude", "UserID", "DateTagged", "DateUntagged", "Bearing", "Tilt", "Zoom", "Distance"
 
-            DateTagged = str(DateTagged)
-            DateUntagged = str(DateUntagged)
+            if DateTagged != None:
+                DateTagged = str(DateTagged)
 
-            dct = { "OptionsID" : OptionsID,
-                    "GlobalID" : GlobalID,
-                    "Latitude" : Latitude,
-                    "Longitude" : Longitude,
-                    "UserID" : UserID ,
-                    "DateTagged" : DateTagged,
-                    "DateUntagged" : DateUntagged,
-                    "Distance" : Distance,
-                    "Bearing" : Bearing,
-                    "Tilt" : Tilt,
-                    "Zoom" : Zoom  }
+            if DateUntagged != None:
+                DateUntagged = str(DateUntagged)
 
-            final_json.append(dct)
+            item = OptionsID, GlobalID, Latitude, Longitude, UserID, DateTagged, DateUntagged, Bearing, Tilt, Zoom, Distance
+
+            for t in item:
+                if t != None:
+                    header = headers[item.index(t)]
+                    dictionary[header] = t
+
+            final_json.append(dictionary)
 
         return json.dumps(final_json)
 

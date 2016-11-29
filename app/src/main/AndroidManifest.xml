@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="bldg5.jj.findanontelecom"
+    package="bldg5.jj.findpayphones"
     android:versionCode="2"
     android:versionName="1.0.1">
 
@@ -44,7 +44,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name="bldg5.jj.findpayphones.MapsActivity"
             android:label="@string/title_activity_maps">
 
             <intent-filter>
@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StreetView"
+            android:name="bldg5.jj.findpayphones.StreetView"
             android:label="@string/title_activity_street_view"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

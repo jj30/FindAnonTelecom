@@ -4,10 +4,10 @@
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
-    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=3B:17:F5:72:30:26:AB:B6:35:1A:F5:72:38:9E:C7:71:3F:8F:77:D1%3Bbldg5.jj.findanontelecom
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=3B:17:F5:72:30:26:AB:B6:35:1A:F5:72:38:9E:C7:71:3F:8F:77:D1%3Bbldg5.jj.findpayphones
 
     You can also add your credentials to an existing key, using this line:
-    3B:17:F5:72:30:26:AB:B6:35:1A:F5:72:38:9E:C7:71:3F:8F:77:D1;bldg5.jj.findanontelecom
+    3B:17:F5:72:30:26:AB:B6:35:1A:F5:72:38:9E:C7:71:3F:8F:77:D1;bldg5.jj.findpayphones
 
     Alternatively, follow the directions here:
     https://developers.google.com/maps/documentation/android/start#get-key

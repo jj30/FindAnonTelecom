@@ -13,7 +13,7 @@
         "client_id": "android:com.google.android.gms.example.bannerexample",
         "client_type": 1,
         "android_client_info": {
-          "package_name": "bldg5.jj.findanontelecom",
+          "package_name": "bldg5.jj.findpayphones",
           "certificate_hash": []
         }
       },
