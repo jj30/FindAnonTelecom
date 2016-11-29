@@ -3,48 +3,12 @@
 
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="20a3c4e355150c15c13dd58045d43ad0c717d916">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-safetynet-9.8.0_7eb6f3cca1e87db3e338fb5dafd4e96cc4e498ad/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-database/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="03df48d3713661d66ad024b1e406259a4c26fcac">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-database-9.8.0_f69eb23160e1ba8354cfc3889c1c63d0d2eec46a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="76fb65a4b41ea42dab8a1310ed772a2420c96b52">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-25.0.0_423839b47cadba9467c4ec628360a0da276e567c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/design/25.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="26384be22ddc74cfe197ebda9edbc7d1fd8bd537">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-design-25.0.0_f82721bccceecb5fac69c9f650448800e48f2d59/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.7/751f548c85fa49f330cecbb1875893f971b33c4e/gson-2.7.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="751f548c85fa49f330cecbb1875893f971b33c4e">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/gson-2.7_58bdfeecbbd70d547e1e518ac15c5d495f4f7340/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -66,15 +30,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-awareness/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a2537b11ae24b42172d34e2a613fc0b903c56158">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-awareness-9.8.0_a8c0a1b47c9d896a10a10ba1af2fa7fc55c8fc2e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.0/jars/libs/internal_impl-25.0.0.jar"
         jumboMode="true"
         optimize="true"
@@ -93,30 +48,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/transition/25.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="0c6d948e6cb9ea6f535d175fb61ba2930719c0e9">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-transition-25.0.0_8a9da3125b0ce4a4c5414fdf0958ffba88bbbfd8/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/9.8.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="9f6d236bac26d02b410e4ee186ba517ace5ee661">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-basement-9.8.0_b2055d7f7cb517b25e16896ddafaa5f7ab5eba9c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.4/5fe28b9518e58819180a43a850fbc0dd24b7c050/commons-lang3-3.4.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="5fe28b9518e58819180a43a850fbc0dd24b7c050">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/commons-lang3-3.4_efa24e95597c26f8cdc809ca3577f1f1e4c6fc3b/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -129,21 +66,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.0/jars/classes.jar"
-        jumboMode="false"
+        jar="/home/jj/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.4/5fe28b9518e58819180a43a850fbc0dd24b7c050/commons-lang3-3.4.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="4ccbcda5c72027c7f7c14be9ff8640d9cb0d8da0">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-support-core-utils-25.0.0_e9108b356c296ec41d58e6963fe2d59d6edb350d/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a7a04d6b7c01e569a285fa627cf64f5b05295906">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-fitness-9.8.0_a676a737bfcbe0f6d5f0ff3cf2d0ee5f3658e940/classes.dex" />
+        sha1="5fe28b9518e58819180a43a850fbc0dd24b7c050">
+        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/commons-lang3-3.4_efa24e95597c26f8cdc809ca3577f1f1e4c6fc3b/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -201,33 +129,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="9f6d236bac26d02b410e4ee186ba517ace5ee661">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-basement-9.8.0_b2055d7f7cb517b25e16896ddafaa5f7ab5eba9c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.4/5fe28b9518e58819180a43a850fbc0dd24b7c050/commons-lang3-3.4.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="5fe28b9518e58819180a43a850fbc0dd24b7c050">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/commons-lang3-3.4_efa24e95597c26f8cdc809ca3577f1f1e4c6fc3b/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="e56f31b23ddb067f95f01255295167db7c798612">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-appinvite-9.8.0_f2fbabb5f01e1ccfa42a6d6e2ec0b4e654a78c84/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads-lite/9.8.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -255,57 +156,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.0.0/jars/classes.jar"
-        jumboMode="false"
+        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.0/jars/classes.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="5e497d60f0cb6ce87c458ac5420a46d0fed49bd0">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-recyclerview-v7-25.0.0_9546590238bb0d5ed645b667b2ae1b4fa197c14f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics-impl/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="50e35ae101a679c4c8ef3dda075b1df9d5d947d9">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-analytics-impl-9.8.0_ed4a1c6c6ea6ab15f2b06b17b7e81d96605d8107/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="910c013c511f752c4bbe24c5f492f669f4a3ccc0">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-wallet-9.8.0_48b43f13d815110a855708fa88a58c9c4a06c7be/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="cef85cfc7df40e29fbea58844dd4c1e7d0b15542">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-identity-9.8.0_682c86c9a6d2138cf62bff1d688775a2a11d3660/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.1.0/2de7cd8b95b7021b1d597f049bcb422055119f2c/retrofit-2.1.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="2de7cd8b95b7021b1d597f049bcb422055119f2c">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/retrofit-2.1.0_dbf795d4edc125e050d6c56e21045cad0e3e8e17/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth-common/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="4438b1a7848a7c571122ba618aa1304514aabee6">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-auth-common-9.8.0_470c075f23a5911ebf7c0776fdfa5f626c4522a3/classes.dex" />
+        sha1="26674000177e45447a0326a6ad84612761199a13">
+        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-25.0.0_bc642ad74e1e2c2f788ddeed20ff5dd527d02f0a/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -315,15 +171,6 @@
         revision="25.0.0"
         sha1="7e92aadd0697922316d1395c1887a23aebec640a">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-base-9.8.0_472ce8be81801ea6ddc15c11fd44e3c9bb6de4eb/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="26674000177e45447a0326a6ad84612761199a13">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-25.0.0_bc642ad74e1e2c2f788ddeed20ff5dd527d02f0a/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -363,24 +210,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="7e92aadd0697922316d1395c1887a23aebec640a">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-base-9.8.0_472ce8be81801ea6ddc15c11fd44e3c9bb6de4eb/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth/9.8.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="15e59454416c6341bd3ed2533b585cd340682dd1">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-auth-9.8.0_4f1af5be0a91fe4f815de5cc7d8da08c55ab66b9/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/design/25.0.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -399,30 +228,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/9.8.0/jars/classes.jar"
-        jumboMode="false"
+        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth/9.8.0/jars/classes.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="122ec9237acd8a57d974b9d529987f1ee6ca5aea">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-maps-9.8.0_7be802525190a20065ab73b1c887b21568696bc6/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.0/support-annotations-25.0.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a22d2cc94da87b254451fa8ed28afc30b4653773">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/support-annotations-25.0.0_60f96af16c25e982c77fd0b037a427fb4aa83ee6/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-storage/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="7fd91ec2730fdaa82906aad32a3f3d3e574bae56">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-storage-9.8.0_42e0ef17c73f08fa51c6129672fbdeeb7eee9282/classes.dex" />
+        sha1="15e59454416c6341bd3ed2533b585cd340682dd1">
+        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-auth-9.8.0_4f1af5be0a91fe4f815de5cc7d8da08c55ab66b9/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -453,57 +264,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="76fb65a4b41ea42dab8a1310ed772a2420c96b52">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-support-media-compat-25.0.0_423839b47cadba9467c4ec628360a0da276e567c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="2d3035050a075484cbf2e33f1ce1f779bae4d451">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-panorama-9.8.0_b244207f0bf236cb19f1cdc9874df3f092913f07/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="74ac7cbcf0de4a88e59612dc3a9e3f9e71acb4ca">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-cast-9.8.0_d993bafd35d5da41b30efc3ca1bf3fea058c5360/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.0.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-25.0.0_ee8653b37e655c311ae410578d3b7ecafd4fd9bf/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tagmanager-api/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="266570862e5792ef3c51143a8b8593cf54fac68d">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-tagmanager-api-9.8.0_40bee484567bc993c025c5b3c46f4e5363733a85/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="75b1f366ff0bbc78f8b1f7cf0dc82e7c53afef6a">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-support-compat-25.0.0_a455352baa84ab0b54d00d9ac5c04785d72fe164/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -516,66 +282,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-clearcut/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="ee5304fd374e0b4ebf6b42d4037fbfb2c5336511">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-clearcut-9.8.0_b6edd1b10a0895a06c234803e6333f5a88f951ea/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth-module/9.8.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="3f8f779a22cbb4c4d0759467a4f1011bb5252970">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-auth-module-9.8.0_21c737f1480a216fae45d810b14d549b3cdfdc75/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="0b53c4b90654b67ee3892a8e2e7b819c083ab7a6">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-drive-9.8.0_326c1ac20e9e59e41e7de6a2e6bf1cf2c0b889f7/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="07daa0b6e1d455c82a38422ffe287c18823d339a">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-support-fragment-25.0.0_410b063baf99ec157ddddef7ee30f48f86e108e8/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="0b8e087da59c0b062c33f49a335e59f907086da2">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-wearable-9.8.0_615363c5c2fa3ba182c8b48788edb7ae509e2df8/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.0/jars/libs/internal_impl-25.0.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="f2e3b9bc1ec25f652e8007ce7774c991e38f6a00">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/internal_impl-25.0.0_250f56e84bc5564081f68ad1069d5ca823e83151/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="9ff04cc3470178a44512624036751a803418c2ca">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-analytics-9.8.0_5bc56f8a84face96391fb07822c7e0167a9c714b/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -588,30 +300,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-storage-common/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="ec9104b53aee77dfcfd2fe1c4add23ff7c4df55f">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-storage-common-9.8.0_e54bb920f5a8bc827c4f09dcbb7a098dbf7ddf21/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.3.0/2b802460eea20f8f2ad9c08c74e0f14718e88aa9/okhttp-3.3.0.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="2b802460eea20f8f2ad9c08c74e0f14718e88aa9">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/okhttp-3.3.0_a2e7f37da394da0c9c8220c3813fa2abe63e7014/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/palette-v7/24.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="734e80dffea7bd76c18ae256822a124c30d85850">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-palette-v7-24.0.0_85a86d168eedf28e8025ce96502992c34bb74c98/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -651,33 +345,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth-module/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3f8f779a22cbb4c4d0759467a4f1011bb5252970">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-auth-module-9.8.0_21c737f1480a216fae45d810b14d549b3cdfdc75/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="26674000177e45447a0326a6ad84612761199a13">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-support-core-ui-25.0.0_bc642ad74e1e2c2f788ddeed20ff5dd527d02f0a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d29714cc76b38157e3cbd034c66e1ec808eb4c19">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-support-vector-drawable-25.0.0_6c35d66753914d1b82a1fe6960f1ed1ab6cafb79/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tagmanager/9.8.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -696,39 +363,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.1.0/aa557d71ead91cbf26e0c316a0f593d168303309/converter-gson-2.1.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="aa557d71ead91cbf26e0c316a0f593d168303309">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/converter-gson-2.1.0_a363b851c607910760a48b33755f40d8d7c54b2f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.0/support-annotations-25.0.0.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="a22d2cc94da87b254451fa8ed28afc30b4653773">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.0.0_60f96af16c25e982c77fd0b037a427fb4aa83ee6/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="53a420cd4f49274db6bd43475f8006ba67ef6bbd">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-animated-vector-drawable-25.0.0_949e162878c3177c9767d8e4e817d7bc951c571f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-messaging/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="5ffe8867f51cfc726e9fb21db1e5b6962ebf25a0">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-messaging-9.8.0_515bdcb4cd50933c926763278e0420379ab99b85/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -747,42 +387,6 @@
         revision="25.0.0"
         sha1="266570862e5792ef3c51143a8b8593cf54fac68d">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-tagmanager-api-9.8.0_40bee484567bc993c025c5b3c46f4e5363733a85/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3daa7a9c9009fd386872a84c177a76979bdcafd6">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-plus-9.8.0_fe0d0f9ba8ee0903999c8d42554073e8d0f8bcf8/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tagmanager/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a972970c8beddb69c198f61f3fc55f0606a7dfe3">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-tagmanager-9.8.0_eaaaa8f285a0cb0ef460956d9f0f8c5f264b1b78/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-instantapps/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="00d358528c5a8731a6e19bca910cbb3fd755ee31">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-instantapps-9.8.0_80f58b34b458e65e73e56ab8e0c9d3dbfed60abb/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="04bbbddf868aa02dd33f9e90d8f5d908c360f638">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-location-9.8.0_584decde95647567106a3d983d33f84215e748c1/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -831,15 +435,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.0/jars/libs/internal_impl-25.0.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/internal_impl-25.0.0_80b5cafdc9a0486b05cd7caa5b03827de2e97fb4/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.0/jars/libs/internal_impl-25.0.0.jar"
         jumboMode="true"
         optimize="true"
@@ -855,24 +450,6 @@
         revision="25.0.0"
         sha1="74ac7cbcf0de4a88e59612dc3a9e3f9e71acb4ca">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-cast-9.8.0_d993bafd35d5da41b30efc3ca1bf3fea058c5360/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-iid/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="6b6f292b8b951dcf2ecf2b20853e3eabc7d65c48">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-iid-9.8.0_4ccd09602ac2870360853b3032ebf33ab1513252/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.0/jars/libs/internal_impl-25.0.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="665d21a8a069c96b4d9e8b434f5096d865b4e261">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/internal_impl-25.0.0_b1fa4bd87fa73638e0e3b321f88a2b3c58fd146a/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -894,57 +471,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gass/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="363a20f1d25336e827dd24020f2ecdc42d62638f">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-gass-9.8.0_4644e80a676c383fea1f897514508cae5e1d6629/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast-framework/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="055eed08c9cff50cac0db69c74c4d9ff7aef3d84">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-cast-framework-9.8.0_792f0101e05fdac278a0c82d19577b3610ae1742/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-storage-common/9.8.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="ec9104b53aee77dfcfd2fe1c4add23ff7c4df55f">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.firebase-firebase-storage-common-9.8.0_e54bb920f5a8bc827c4f09dcbb7a098dbf7ddf21/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="ca851be26ff89f5b32cc222cee98139fb3fac830">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-auth-9.8.0_6ab280b6b0a7d808cbdf935ca07afdd44ce3259f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-support-v4-25.0.0_ee8653b37e655c311ae410578d3b7ecafd4fd9bf/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics-impl/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="190a642ba16d1421296a4d794606279b80039c59">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-analytics-impl-9.8.0_23fd6e9a5b2e20d40ec91de05d6b4c06faf09be4/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -963,15 +495,6 @@
         revision="25.0.0"
         sha1="055eed08c9cff50cac0db69c74c4d9ff7aef3d84">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-cast-framework-9.8.0_792f0101e05fdac278a0c82d19577b3610ae1742/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-database-connection/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="5f47ede9561595584dca71104baa0fecb36dda87">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-database-connection-9.8.0_d4143b98449620faeb825153056402b2b4389b83/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -997,7 +520,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="a4c7df5bf34801fc6f6ec511e9d2b4c7d0a932e8">
+        sha1="7f5c7d223a90d060e87869e2eae0aa141539c26e">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_11e78af7713f3ff56881cfc68f5b9e7ca9f8166c/classes.dex" />
     </item>
     <item
@@ -1011,75 +534,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/24.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="b327fbe2fad414bc38cf0ce8f7efe1a38f572837">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-mediarouter-v7-24.0.0_7d9686423dad1611180335f65059b6df9e18f830/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth-base/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a1ed98e01bd58976d80c062fd0ea2968a1ff68a1">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-auth-base-9.8.0_266e2d3fe1681f4b5386c1966b6eeb0fc52c7eaf/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/9.8.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="f2d240dd085626f03f759c41d628a0c8b63e491f">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-ads-9.8.0_b3a32612e563967d8eb17ed0d25b84f032aca705/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.0/jars/libs/internal_impl-25.0.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="ee5faf4dee5b6a4364bf51587871047dde7c703a">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/internal_impl-25.0.0_9cf8c3c0f453d872930c103c0e323612390b0704/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a30aea7df545072ad3c06f56b2efc13e67222140">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-vision-9.8.0_911fa8d4208a49e3c203baacc1f05776fe6def8e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-auth/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="15e59454416c6341bd3ed2533b585cd340682dd1">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-auth-9.8.0_4f1af5be0a91fe4f815de5cc7d8da08c55ab66b9/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.3.0/2b802460eea20f8f2ad9c08c74e0f14718e88aa9/okhttp-3.3.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="2b802460eea20f8f2ad9c08c74e0f14718e88aa9">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/okhttp-3.3.0_a2e7f37da394da0c9c8220c3813fa2abe63e7014/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tasks/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="bf2e1838e4428616c1aa26edf43de72b5b99bf84">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-tasks-9.8.0_1801b42b1f274ca33cea44a011fd486c200b0f1c/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -1110,24 +570,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="fbb3885c40e431cd2b0dc69c0cab2bf6d5da7b43">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-games-9.8.0_e62ce3aad1a9c4dea6baca28e021123c2d5406ba/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.0/jars/libs/internal_impl-25.0.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3b61a70884adaf0be3fc06c70c801e3e6df13133">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/internal_impl-25.0.0_8230f376c420dc636de159e5031d5a4f2d87ac8d/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-awareness/9.8.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -1146,30 +588,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-crash/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="b4671be3d1288bf4e5f527cd33e42909fbe4ecc6">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-crash-9.8.0_a1d10d5397cc424c441c71880aca3498d41689c4/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.0.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="53a420cd4f49274db6bd43475f8006ba67ef6bbd">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-25.0.0_949e162878c3177c9767d8e4e817d7bc951c571f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-places/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="679251204de40ace98776a6f4e3a649c27e3d89f">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-places-9.8.0_559ad53540df6f17fe93c8f83d23b8f48e02ffce/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -1182,21 +606,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="16afe57c1d7f8165d107c7806ce7b0c71de87159">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-analytics-9.8.0_8db16d131133a1b29e4694dfdef741a2cb0bd55c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gass/9.8.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="363a20f1d25336e827dd24020f2ecdc42d62638f">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-gass-9.8.0_4644e80a676c383fea1f897514508cae5e1d6629/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b784e40a015fac70bbdaec6b1659c011ba22b012">
+        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_6c90b1734e378fb60898d08de3a85528aa8b6c0d/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -1209,30 +633,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="9f04daa3b270ceff2173fdb51cf028db606d83f5">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_6c90b1734e378fb60898d08de3a85528aa8b6c0d/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.0/jars/libs/internal_impl-25.0.0.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-25.0.0_80b5cafdc9a0486b05cd7caa5b03827de2e97fb4/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-config/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="289cad663c288ce965463cb9ece8b35cc7de0fac">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-config-9.8.0_9aab65017e8432459f2af4e56f67e0ad5865fdb0/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -1254,57 +660,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.0.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="8bc45ce1f63d1a391fd38b32a201be5a42f9c95d">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.android.support-appcompat-v7-25.0.0_9b95493da7d77f10575afbc07a1899a558dd400e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.firebase/firebase-common/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="c61641e333fa88da21758bab8cc28ee16604b05f">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.firebase-firebase-common-9.8.0_ebad50f92a5ad1144143e3a101080db92a91975b/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="e3234cd25e23069abd48ecd2117bc0e8011bf45a">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-appindexing-9.8.0_e7c4bc1ca83bb0dfe9f6a72cc9951dadb20bffbc/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="c81df6bd515398ebe45089b0b16c55752a131f6a">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-nearby-9.8.0_bb29de3d147a39d0e43ded580ff465c639675167/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/9.8.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="910c013c511f752c4bbe24c5f492f669f4a3ccc0">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-wallet-9.8.0_48b43f13d815110a855708fa88a58c9c4a06c7be/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads-lite/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="e9b2cfdfd59b03643f1e240668275378b96615a8">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-ads-lite-9.8.0_33f6dab326a1844b6d86a559cd4bbbae33746621/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -1317,33 +678,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-iid/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="85299bf1924dde0200109a58033c5ef84ecb6991">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-iid-9.8.0_eca3ad915004e81bd615cb4d7d1c813a40ee22fb/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/24.0.0/jars/libs/internal_impl-24.0.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="b6763651ec29b4c95e7bbe63fc393ffcc8c4c2c5">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/internal_impl-24.0.0_f64551a6cd0c8890a8f6b45f623258b2c54b8e5a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.8.0/5ea7af56cc7c567ed9856d99efb30740e9b17ff/okio-1.8.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="05ea7af56cc7c567ed9856d99efb30740e9b17ff">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/okio-1.8.0_e24639a49246bbec73c793f14ab5c25f46638c3b/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/9.8.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -1353,30 +687,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="f2d240dd085626f03f759c41d628a0c8b63e491f">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-ads-9.8.0_b3a32612e563967d8eb17ed0d25b84f032aca705/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/9.8.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="a30aea7df545072ad3c06f56b2efc13e67222140">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-vision-9.8.0_911fa8d4208a49e3c203baacc1f05776fe6def8e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jj/Code/FindAnonTelecom/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/9.8.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="9dae58326f6f6a515022468cce56dd04ec3b9fdb">
-        <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/release/folders/1000/10/com.google.android.gms-play-services-gcm-9.8.0_c6c39b8f7ffedf26fbedb1d92da5194b4d1aa23d/classes.dex" />
     </item>
     <item
         is-multidex="true"

@@ -45,7 +45,7 @@ import java.util.List;
 // https://www.javacodegeeks.com/2010/09/android-location-based-services.html
 public class MapsActivity extends FragmentActivity
         implements OnMapReadyCallback {
-    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1; // in Meters
+    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 100; // in Meters
     private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000; // in Milliseconds
     protected GoogleMap mMap;
     protected LocationManager locationManager;
@@ -96,10 +96,18 @@ public class MapsActivity extends FragmentActivity
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION);
-            return;
-        }
+        } else {
+            setLocationManager();
+            pinsDrawn = getLastLocation();
 
-        pinsDrawn = getLastLocation();
+            if (!bPinsDrawn) {
+                // get the options from the cloud
+                getCloudOptions.sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+                getCloudOptions.PullDown(dblLat, dblLong);
+
+                DrawMarkers50Miles(pinsDrawn);
+            }
+        }
     }
 
     @Override
@@ -109,44 +117,57 @@ public class MapsActivity extends FragmentActivity
         // Initializing the map means 1) get last location 2) camera to it
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Init map is called in the onRequestPermissionsResult callback.
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION);
         } else {
+            setLocationManager();
             InitMap(googleMap);
         }
     }
 
-    private Location getLastLocation() {
+    private void setLocationManager() {
         try {
-            // Get last location
+            // set the location manager
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     MINIMUM_TIME_BETWEEN_UPDATES,
                     MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
-                    new MyLocationListener()
+                    new ALocationListener()
             );
 
             Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
             criteria.setAltitudeRequired(false);
             criteria.setBearingRequired(false);
             criteria.setCostAllowed(true);
             criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
 
             mprovider = locationManager.getBestProvider(criteria, false);
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return null;
-            }
+        } catch(Exception ex) {
+            Log.e("FANTEL", ex.getMessage());
+            FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+            sqLiteHelper.logError(ex.getMessage());
+        }
+    }
 
-            Location location = locationManager.getLastKnownLocation(mprovider);
-            return location;
+    private Location getLastLocation() {
+        Location location = locationManager.getLastKnownLocation(mprovider);
+
+        try {
+            dblLat = location.getLatitude();
+            dblLong = location.getLongitude();
         } catch(Exception ex) {
             FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
             sqLiteHelper.logError(ex.getMessage());
-            return null;
+
+            // take a stab at how we got here.
+            setLocationManager();
         }
+
+        return location;
     }
 
     @Override
@@ -157,6 +178,7 @@ public class MapsActivity extends FragmentActivity
         {
             // Check Permissions Granted or not
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                setLocationManager();
                 InitMap(mMap);
             } else {
                 Toast.makeText(this, "Access location permission was denied.", Toast.LENGTH_LONG).show();
@@ -173,8 +195,6 @@ public class MapsActivity extends FragmentActivity
 
             // If we have one and the map is ready, zoom into it.
             if (location != null && mMap != null) {
-                dblLat = location.getLatitude();
-                dblLong = location.getLongitude();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dblLat, dblLong), 13));
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -192,25 +212,24 @@ public class MapsActivity extends FragmentActivity
                 DrawMarkers50Miles(location);
             }
         } catch(Exception ex) {
+            Log.e("FANTEL", ex.getMessage());
             FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
             sqLiteHelper.logError(ex.getMessage());
         }
     }
 
-    private class MyLocationListener implements LocationListener {
+    private class ALocationListener implements LocationListener {
         public void onLocationChanged(Location location) {
-            // if new location is within a mile of the init'ed location, don't redraw
-            float distance = pinsDrawn.distanceTo(location);
+            if (!bPinsDrawn) {
+                dblLat = location.getLatitude();
+                dblLong = location.getLongitude();
 
-            // 50 meters to make sure it only runs when the person actually moves.
-            if (distance > 50 || !bPinsDrawn) {
-                // let's synch the cloud and the local db's now
-                // options in db? send to cloud. opts in cloud? pull down.
-                // at present time, the app only shows options FOR THE CURRENT LOCATION & FROM THE LOCAL DB
+                // get the options from the cloud
+                getCloudOptions.sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+                getCloudOptions.PullDown(dblLat, dblLong);
 
+                // draw the markers from the cloud, now in the local DB (asynchronous)
                 DrawMarkers50Miles(location);
-                pinsDrawn = location;
-                bPinsDrawn = true;
             }
         }
 
@@ -221,17 +240,28 @@ public class MapsActivity extends FragmentActivity
         }
 
         public void onProviderEnabled(String s) {
+            if (!bPinsDrawn) {
+                setLocationManager();
+                Location location = getLastLocation();
+
+                // get the options from the cloud
+                getCloudOptions.sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+                getCloudOptions.PullDown(dblLat, dblLong);
+
+                // draw the markers from the cloud, now in the local DB (asynchronous)
+                DrawMarkers50Miles(location);
+            }
         }
     }
 
     private void DrawMarkers50Miles(Location location) {
-        dblLat = location.getLatitude();
-        dblLong = location.getLongitude();
-
         final FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
         allDBOptions = sqLiteHelper.getAllTCOs(true);
 
         try {
+            dblLat = location.getLatitude();
+            dblLong = location.getLongitude();
+
             if (allDBOptions != null) {
                 if (allDBOptions.size() > 0) {
                     for (final TCODb tcoDb : allDBOptions) {
@@ -241,9 +271,14 @@ public class MapsActivity extends FragmentActivity
 
                     bPinsDrawn = true;
                     pinsDrawn = location;
+                } else {
+                    // get the options from the cloud
+                    getCloudOptions.sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
+                    getCloudOptions.PullDown(dblLat, dblLong);
                 }
             }
         } catch(Exception ex) {
+            Log.e("FANTEL", ex.getMessage());
             sqLiteHelper.logError(ex.getMessage());
         }
     }
@@ -269,10 +304,10 @@ public class MapsActivity extends FragmentActivity
                 allDBOptionsLatLng.add(latLng);
             }
         } catch(Exception ex) {
+            Log.e("FANTEL", ex.getMessage());
             sqLiteHelper.logError(ex.getMessage());
         }
     }
-
 
     private GoogleMap.OnMarkerClickListener mMarkerListener = new GoogleMap.OnMarkerClickListener() {
         @Override
@@ -345,6 +380,7 @@ public class MapsActivity extends FragmentActivity
                     });
                 }
             } catch (Exception ex) {
+                Log.e("FANTEL", ex.getMessage());
                 sqLiteHelper.logError(ex.getMessage());
             }
 
@@ -415,6 +451,7 @@ public class MapsActivity extends FragmentActivity
                 } catch(NullPointerException ex) {
                     // mMap was null or pinsdrawn was null, which means that they havent been drawn yet.
                     // they'll have to click this button again.
+                    Log.e("FANTEL", ex.getMessage());
                     InitMap(mMap);
                     FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
                     sqLiteHelper.logError(ex.getMessage());
@@ -449,6 +486,7 @@ public class MapsActivity extends FragmentActivity
                         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     }
                 } catch(Exception ex) {
+                    Log.e("FANTEL", ex.getMessage());
                     FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
                     sqLiteHelper.logError(ex.getMessage());
                 }
@@ -499,6 +537,7 @@ public class MapsActivity extends FragmentActivity
             }
         }
         catch(Exception ex) {
+            Log.e("FANTEL", ex.getMessage());
             FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
             sqLiteHelper.logError(ex.getMessage());
         }
