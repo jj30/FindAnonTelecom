@@ -520,7 +520,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="7f5c7d223a90d060e87869e2eae0aa141539c26e">
+        sha1="0bff5c1746ff259698475b7ffdb1d500d055f40e">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_11e78af7713f3ff56881cfc68f5b9e7ca9f8166c/classes.dex" />
     </item>
     <item
@@ -619,7 +619,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="b784e40a015fac70bbdaec6b1659c011ba22b012">
+        sha1="432de652b95e7fd97db59edc236aeb3599a0b1c9">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_6c90b1734e378fb60898d08de3a85528aa8b6c0d/classes.dex" />
     </item>
     <item

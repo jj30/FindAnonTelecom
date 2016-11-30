@@ -114,17 +114,8 @@ public class MapsActivity extends FragmentActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Initializing the map means 1) get last location 2) camera to it
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Init map is called in the onRequestPermissionsResult callback.
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_LOCATION);
-        } else {
-            setLocationManager();
-            InitMap(googleMap);
-        }
+        setLocationManager();
+        InitMap(googleMap);
     }
 
     private void setLocationManager() {
@@ -145,7 +136,7 @@ public class MapsActivity extends FragmentActivity
             criteria.setCostAllowed(true);
             criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
 
-            mprovider = locationManager.getBestProvider(criteria, false);
+            mprovider = locationManager.getBestProvider(criteria, true);
         } catch(Exception ex) {
             Log.e("FANTEL", ex.getMessage());
             FanTelSQLiteHelper sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());

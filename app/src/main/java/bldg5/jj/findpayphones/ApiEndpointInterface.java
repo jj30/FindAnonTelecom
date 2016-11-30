@@ -24,4 +24,10 @@ public interface ApiEndpointInterface {
         @Query("tilt") String tilt,
         @Query("zoom") String zoom
     );
+
+    @GET("/err")
+    Call<String> errToCloud(
+            @Query("error") String error,
+            @Query("datecreated") String datecreated
+    );
 }

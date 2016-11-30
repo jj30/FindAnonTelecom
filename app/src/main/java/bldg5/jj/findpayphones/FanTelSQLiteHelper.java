@@ -178,6 +178,33 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
         return tcos;
     }
 
+    public List getAllErrors() {
+        List errs = new LinkedList();
+        String query = "SELECT  * FROM " + table_error;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Error err = null;
+
+        if (cursor.moveToFirst()) {
+            do {
+                err = new Error();
+                err.setError(cursor.getString(0));
+                err.setDatecreated(cursor.getString(1));
+
+                errs.add(err);
+            } while (cursor.moveToNext());
+        }
+
+        return errs;
+    }
+
+    public void deleteAllErrors() {
+        // after they've been sent to the cloud
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(table_error, "", new String[] { });
+        db.close();
+    }
+
     public void deleteTCO(TCODb tcoDb) {
         // get today's date for DateUntagged
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

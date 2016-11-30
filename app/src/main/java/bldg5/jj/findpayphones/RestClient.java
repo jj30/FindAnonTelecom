@@ -38,18 +38,19 @@ public class RestClient {
                 if (bSuccess) {
                     allCloudOptions = response.body();
                     synch();
+                    synch_errors();
                 }
             }
 
             @Override
             public void onFailure(Call<List<TCODb>> call, Throwable t) {
-                Log.e("Fantel", t.toString());
+                Log.e("FANTEL", t.toString());
                 sqLiteHelper.logError(t.getMessage());
             }
         });
     }
 
-    public void SendToCloud(TCODb tcoDb) {
+    public void saveToCloud(TCODb tcoDb) {
         // String strLocalOptionID = String.valueOf(tcoDb.getGlobalID());
         String strLatitude = String.valueOf(tcoDb.getLatitude());
         String strLongitude = String.valueOf(tcoDb.getLongitude());
@@ -84,8 +85,40 @@ public class RestClient {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.e("Fantel", t.toString());
+                Log.e("FANTEL", t.toString());
                 sqLiteHelper.logError(t.getMessage());
+            }
+        });
+    }
+
+    public void errorToCloud(Error error) {
+        String strError = String.valueOf(error.getError());
+        String strDateTagged = error.getDateCreated();
+
+        if (strDateTagged == null) {
+            strDateTagged = "";
+        }
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ApiEndpointInterface service = retrofit.create(ApiEndpointInterface.class);
+        Call<String> call = service.errToCloud(strError, strDateTagged);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                boolean bSuccess = response.isSuccessful();
+
+                if (bSuccess) {
+                    strResponse = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
             }
         });
     }
@@ -108,7 +141,7 @@ public class RestClient {
             // save local db option to cloud
             for (TCODb tc : localDBOptions) {
                 // kluge alert: we should send only deltas to the cloud.
-                SendToCloud(tc);
+                saveToCloud(tc);
 
                 // if it was never set, it never came from the cloud
                 if (tc.getGlobalID() == null) {
@@ -118,5 +151,18 @@ public class RestClient {
         } catch (Exception ex) {
             sqLiteHelper.logError(ex.getMessage());
         }
+    }
+
+    private void synch_errors() {
+        List<Error> localErrors = sqLiteHelper.getAllErrors();
+
+        try {
+            // save local db err to cloud
+            for (Error err : localErrors) {
+                errorToCloud(err);
+            }
+
+            sqLiteHelper.deleteAllErrors();
+        } catch (Exception ex) { }
     }
 }
