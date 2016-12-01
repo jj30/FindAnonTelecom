@@ -38,10 +38,20 @@ class GetOptions(object):
                     print("going to untag::: " + dateuntagged + ":::")
                     self.untag(item_global)
                     return
-                breakdelete from FantelOptions where OptionsID = 165
+                break
 
         if (not bFound):
             self.SaveToDB(latitude, longitude, userid, datetagged, dateuntagged, bearing, tilt, zoom)
+
+    @cherrypy.expose
+    def err(self, error, datecreated):
+        db = pymysql.connect(self.db_location, self.db_user_name, self.db_pwd, self.db_database_name)
+        cursor = db.cursor()
+        exec_string = "call spCreateError('%s', '%s')" % (error, datecreated)
+        print (exec_string)
+        cursor.execute(exec_string)
+        db.commit()
+        db.close()
 
     def untag(self, global_id):
         try:

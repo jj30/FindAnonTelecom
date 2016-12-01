@@ -17,7 +17,7 @@ public class RestClient {
     public FanTelSQLiteHelper sqLiteHelper;
     public String strResponse;
 
-    public void PullDown(double latitude, double longitude)
+    public void pullDown(double latitude, double longitude)
     {
         String strLatitude = String.valueOf(latitude);
         String strLongitude = String.valueOf(longitude);
@@ -38,7 +38,6 @@ public class RestClient {
                 if (bSuccess) {
                     allCloudOptions = response.body();
                     synch();
-                    synch_errors();
                 }
             }
 
@@ -85,8 +84,7 @@ public class RestClient {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.e("FANTEL", t.toString());
-                sqLiteHelper.logError(t.getMessage());
+                sqLiteHelper.logError(t.toString());
             }
         });
     }
@@ -153,7 +151,7 @@ public class RestClient {
         }
     }
 
-    private void synch_errors() {
+    public void synch_errors() {
         List<Error> localErrors = sqLiteHelper.getAllErrors();
 
         try {

@@ -114,6 +114,7 @@ public class FanTelSQLiteHelper extends SQLiteOpenHelper {
 
     public void logError(String error)
     {
+        Log.e("FANTEL", error);
         SQLiteDatabase db = this.getWritableDatabase();
 
         // first, get the current date.
