@@ -81,8 +81,8 @@ public class MapsActivity extends FragmentActivity
 
         // Show the ad
         AdRequest adRequest = new AdRequest.Builder().build();
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-1882113672777118~7688775386");
-        // I/Ads: Use AdRequest.Builder.addTestDevice("CA9D245DFDA0DE28135B9132BCF6089F") to get test ads on this device.
+        MobileAds.initialize(getApplicationContext(), "");
+
         mAdView = (AdView) findViewById(R.id.adView);
         mAdView.loadAd(adRequest);
 
