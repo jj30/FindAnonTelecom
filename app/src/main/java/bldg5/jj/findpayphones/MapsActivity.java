@@ -1,5 +1,6 @@
 package bldg5.jj.findpayphones;
 
+import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,9 +35,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -64,6 +69,7 @@ public class MapsActivity extends FragmentActivity
     private List<TCODb> allDBOptions;
     private ArrayList<LatLng> allDBOptionsLatLng = new ArrayList<>();
     public RestClient getCloudOptions = new RestClient();
+    private boolean bClickedNearest = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +105,10 @@ public class MapsActivity extends FragmentActivity
         super.onResume();
 
         setLocationManager();
+
+        if (!bPinsDrawn) {
+            DrawMarkers(pinsDrawn);
+        }
     }
 
     @Override
@@ -391,7 +401,7 @@ public class MapsActivity extends FragmentActivity
     public void addListeners()
     {
         Button btnTag = (Button) findViewById(R.id.btnLocation);
-        Button btnNearest = (Button) findViewById(R.id.btnNearest);
+        final Button btnNearest = (Button) findViewById(R.id.btnNearest);
         final Context mContext = this;
 
         btnTag.setOnClickListener(new View.OnClickListener() {
@@ -462,6 +472,8 @@ public class MapsActivity extends FragmentActivity
             @Override
             public void onClick(View view) {
                 try {
+                    TCODb nearest = null;
+
                     if (allDBOptions == null || allDBOptions.size() == 0) {
                         // there are no options, therefore no 'nearest' one
                         Context context = getApplicationContext();
@@ -470,8 +482,35 @@ public class MapsActivity extends FragmentActivity
 
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
+                        return;
                     } else {
-                        TCODb nearest = allDBOptions.get(0);
+                        if (bClickedNearest) {
+                            // default the nearest to the one calc'ed in the cloud.
+                            nearest = allDBOptions.get(0);
+
+                            // get last location of user
+                            Location lcurrent = new Location(mprovider);
+                            lcurrent.setLatitude(dblLat);
+                            lcurrent.setLongitude(dblLong);
+
+                            // loop through options and figure out which is closest.
+                            for (TCODb opt: allDBOptions) {
+                                Location pinTarget = new Location(mprovider);
+                                pinTarget.setLatitude(opt.getLatitude());
+                                pinTarget.setLongitude(opt.getLongitude());
+
+                                Double dblDistance = (double) lcurrent.distanceTo(pinTarget);
+                                opt.setDistance(dblDistance);
+
+                                if (dblDistance < nearest.getDistance()) {
+                                    nearest = opt;
+                                }
+                            }
+                        } else {
+                            bClickedNearest = true;
+                            nearest = allDBOptions.get(0);
+                        }
+
                         Double dblNearestLat = nearest.getLatitude();
                         Double dblNearestLong = nearest.getLongitude();
 

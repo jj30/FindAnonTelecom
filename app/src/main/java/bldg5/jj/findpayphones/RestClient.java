@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
 
-    private static String BASE_URL = "http://107.21.191.19:8080/";
+    private static String BASE_URL = "http://payphone.chickenkiller.com:8080/";
     public List<TCODb> allCloudOptions;
     public FanTelSQLiteHelper sqLiteHelper;
     public String strResponse;
