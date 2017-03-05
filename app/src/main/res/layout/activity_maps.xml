@@ -39,6 +39,7 @@
         style="@style/ButtonText"
         android:text="@string/tag_location" />
 
+    <!-- These two buttons toggle -->
     <Button
         android:id="@+id/btnNearest"
         android:layout_width="wrap_content"
@@ -47,6 +48,17 @@
         android:background="@drawable/button_custom"
         style="@style/ButtonText"
         android:text="@string/find_nearest" />
+
+    <ImageButton
+        android:id="@+id/btnNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:visibility="invisible"
+        android:src="@drawable/ic_share_white_24dp"
+        android:background="@drawable/button_custom"
+        android:layout_above="@id/btnNearest"
+        style="@style/ButtonText" />
 
     <FrameLayout
         android:id="@+id/pinSelected"
@@ -94,4 +106,12 @@
         ads:adUnitId="@string/banner_ad_unit_id"
         android:layout_gravity="top|right">
     </com.google.android.gms.ads.AdView>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:indeterminateTint="@android:color/holo_blue_dark"
+        android:id="@+id/progressBar"
+        android:background ="@drawable/progress" />
 </FrameLayout>

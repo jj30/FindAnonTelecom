@@ -17,7 +17,7 @@
         For more information, see https://support.google.com/admob/answer/3052638
     <!- -->
     <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps">Find Payphone</string>
     <string name="please_turn_on_gps">Please turn on your location service.</string>
     <string name="title_activity_gmaps">Map</string>
     <string name="title_activity_gps">GPSActivity</string>

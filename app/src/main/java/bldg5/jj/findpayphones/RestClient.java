@@ -1,6 +1,7 @@
 package bldg5.jj.findpayphones;
 
 import android.util.Log;
+import android.view.View;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class RestClient {
     public FanTelSQLiteHelper sqLiteHelper;
     public String strResponse;
 
-    public void pullDown(double latitude, double longitude)
+    public void pullDown(double latitude, double longitude, final android.widget.ProgressBar pg)
     {
         String strLatitude = String.valueOf(latitude);
         String strLongitude = String.valueOf(longitude);
@@ -38,6 +39,8 @@ public class RestClient {
                 if (bSuccess) {
                     allCloudOptions = response.body();
                     synch();
+
+                    pg.setVisibility(View.GONE);
                 }
             }
 
@@ -45,6 +48,8 @@ public class RestClient {
             public void onFailure(Call<List<TCODb>> call, Throwable t) {
                 Log.e("FANTEL", t.toString());
                 sqLiteHelper.logError(t.getMessage());
+
+                pg.setVisibility(View.GONE);
             }
         });
     }

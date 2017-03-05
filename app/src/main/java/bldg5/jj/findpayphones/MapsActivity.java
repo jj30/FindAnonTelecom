@@ -11,6 +11,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -19,7 +20,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -62,6 +65,8 @@ public class MapsActivity extends FragmentActivity
     private AdView mAdView;
     private Button btnLocation;
     private Button btnNearest;
+    private Button btnCancel;
+    private ImageButton btnNav;
     private boolean bPinsDrawn = false;
     private boolean bGranted = false;
     private FrameLayout pinSelected;
@@ -70,6 +75,10 @@ public class MapsActivity extends FragmentActivity
     private ArrayList<LatLng> allDBOptionsLatLng = new ArrayList<>();
     public RestClient getCloudOptions = new RestClient();
     private boolean bClickedNearest = false;
+    private ProgressBar progressBar;
+    private double dblNearestLat;
+    private double dblNearestLong;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +86,14 @@ public class MapsActivity extends FragmentActivity
         setContentView(R.layout.activity_maps);
         btnLocation = (Button) findViewById(R.id.btnLocation);
         btnNearest = (Button) findViewById(R.id.btnNearest);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnNav = (ImageButton) findViewById(R.id.btnNav);
         pinSelected = (FrameLayout) findViewById(R.id.pinSelected);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         // Show the ad
         AdRequest adRequest = new AdRequest.Builder().build();
-        MobileAds.initialize(getApplicationContext(), "");
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-1882113672777118~7869377785");
 
         mAdView = (AdView) findViewById(R.id.adView);
         mAdView.loadAd(adRequest);
@@ -226,7 +238,7 @@ public class MapsActivity extends FragmentActivity
                 if (!bPinsDrawn) {
                     // get the options from the cloud
                     getCloudOptions.sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-                    getCloudOptions.pullDown(dblLat, dblLong);
+                    getCloudOptions.pullDown(dblLat, dblLong, progressBar);
 
                     // bPins drawn becomes true
                     DrawMarkers(pinsDrawn);
@@ -237,7 +249,7 @@ public class MapsActivity extends FragmentActivity
                     if (!bPinsDrawn) {
                         // get the options from the cloud
                         getCloudOptions.sqLiteHelper = new FanTelSQLiteHelper(MapsActivity.super.getApplicationContext());
-                        getCloudOptions.pullDown(dblLat, dblLong);
+                        getCloudOptions.pullDown(dblLat, dblLong, progressBar);
 
                         // bPins drawn becomes true
                         DrawMarkers(pinsDrawn);
@@ -264,11 +276,9 @@ public class MapsActivity extends FragmentActivity
             }
         }
 
-        public void onStatusChanged(String s, int i, Bundle b) {
-        }
+        public void onStatusChanged(String s, int i, Bundle b) { }
 
-        public void onProviderDisabled(String s) {
-        }
+        public void onProviderDisabled(String s) { }
 
         public void onProviderEnabled(String s) {
             setLocationManager();
@@ -387,6 +397,28 @@ public class MapsActivity extends FragmentActivity
                             pinSelected.setVisibility(View.GONE);
                             btnLocation.setVisibility(View.VISIBLE);
                             btnNearest.setVisibility(View.VISIBLE);
+                            btnNav.setVisibility(View.GONE);
+                        }
+                    });
+
+                    // toggle 'share' intent bc they're likely going to share
+                    // the location with their navigation apps
+                    btnNav.setVisibility(View.VISIBLE);
+                    btnNav.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String strLat = String.valueOf(dblNearestLat);
+                            String strLong = String.valueOf(dblNearestLong);
+
+                            String uriBegin = "geo:" + strLat + "," + strLong;
+                            String query = strLat + "," + strLong + "(" + "Nearest" + ")";
+                            String encodedQuery = Uri.encode(query);
+                            String uriString = uriBegin + "?q=" + encodedQuery;
+                            Uri uri = Uri.parse(uriString);
+
+                            // http://stackoverflow.com/questions/3990110/how-to-show-marker-in-maps-launched-by-geo-uri-intent/9825296#9825296
+                            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                            startActivity(intent);
                         }
                     });
                 }
@@ -400,7 +432,7 @@ public class MapsActivity extends FragmentActivity
 
     public void addListeners()
     {
-        Button btnTag = (Button) findViewById(R.id.btnLocation);
+        final Button btnTag = (Button) findViewById(R.id.btnLocation);
         final Button btnNearest = (Button) findViewById(R.id.btnNearest);
         final Context mContext = this;
 
@@ -511,8 +543,8 @@ public class MapsActivity extends FragmentActivity
                             nearest = allDBOptions.get(0);
                         }
 
-                        Double dblNearestLat = nearest.getLatitude();
-                        Double dblNearestLong = nearest.getLongitude();
+                        dblNearestLat = nearest.getLatitude();
+                        dblNearestLong = nearest.getLongitude();
 
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dblNearestLat, dblNearestLong), 13));
 
@@ -529,7 +561,6 @@ public class MapsActivity extends FragmentActivity
                 }
             }
         });
-
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
