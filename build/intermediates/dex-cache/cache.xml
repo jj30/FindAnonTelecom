@@ -1204,7 +1204,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="f1b833d563800da35994236f8404f6b9a4faa270">
+        sha1="7b9b01e6ba5df29b42bca17c4692ebb87caf956c">
         <dex dex="/home/jj/Code/FindAnonTelecom/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_6c90b1734e378fb60898d08de3a85528aa8b6c0d/classes.dex" />
     </item>
     <item

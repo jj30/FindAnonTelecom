@@ -1,6 +1,5 @@
 package bldg5.jj.findpayphones;
 
-import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,9 +11,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -38,13 +37,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -407,8 +402,9 @@ public class MapsActivity extends FragmentActivity
                     btnNav.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            String strLat = String.valueOf(dblNearestLat);
-                            String strLong = String.valueOf(dblNearestLong);
+                            TCODb tcoDb = sqLiteHelper.readTCOByOptionID(nID);
+                            String strLat = String.valueOf(tcoDb.getLatitude());
+                            String strLong = String.valueOf(tcoDb.getLongitude());
 
                             String uriBegin = "geo:" + strLat + "," + strLong;
                             String query = strLat + "," + strLong + "(" + "Nearest" + ")";
