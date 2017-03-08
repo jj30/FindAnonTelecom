@@ -4,7 +4,9 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,9 +25,17 @@ public class RestClient {
         String strLatitude = String.valueOf(latitude);
         String strLongitude = String.valueOf(longitude);
 
+        // Client With Time Out
+        OkHttpClient clientWTO = new OkHttpClient
+                .Builder()
+                .readTimeout(5, TimeUnit.MINUTES)
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(clientWTO)
                 .build();
 
         ApiEndpointInterface service = retrofit.create(ApiEndpointInterface.class);
