@@ -8,7 +8,7 @@ BEGIN
 	DECLARE PI DECIMAL(20, 13);
 	SET PI = 3.14159265359;
 	SELECT *, 
-		3959 * 2 * 
+		3956 * 2 * 
         ASIN(
 			SQRT(
 				POWER(
